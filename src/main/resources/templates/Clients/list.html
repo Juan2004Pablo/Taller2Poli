@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <title>Client List</title>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div class="max-w-6xl mx-auto py-10">
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-semibold text-gray-700 underline">Client List</h1>
+                <div class="flex gap-3">
+                    <a href="/" class="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
+                        <i class="ph ph-arrow-left"></i>
+                        Back to Menu
+                    </a>
+                    <a href="/clients/create" class="bg-orange-500 hover:bg-orange-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
+                        <i class="ph ph-plus"></i>
+                        Add Client
+                    </a>
+                </div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+                    <thead class="bg-gray-100 text-gray-500">
+                        <tr>
+                            <th class="p-3 text-left">ID</th>
+                            <th class="p-3 text-left">Name</th>
+                            <th class="p-3 text-left">Email</th>
+                            <th class="p-3 text-left">Created at</th>
+                            <th class="p-3 text-center"></th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-200">
+                        <tr th:each="client : ${clients}" class="hog-gray-100">
+                            <td class="p-3" th:text="${client.id}"></td>
+                            <td class="p-3" th:text="${client.name} + ' ' + ${client.lastname}"></td>
+                            <td class="p-3" th:text="${client.email}"></td>
+                            <td class="p-3" th:text="${#dates.format(client.createdAt, 'dd/MM/yyyy')}"></td>
+                            <td class="p-3 text-center">
+                                <div class="flex justify-center space-x-3">
+                                    <a th:href="@{/clients/{id}(id=${client.id})}" class="text-blue-600 hover:underline flex items-center gap-1">
+                                        <i class="ph ph-eye"></i>
+                                    </a>
+                                    <a th:href="@{/clients/edit/{id}(id=${client.id})}" class="text-yellow-600 hover:underline flex items-center gap-1">
+                                        <i class="ph ph-pencil"></i>
+                                    </a>
+                                    <a th:href="@{/clients/delete/{id}(id=${client.id})}" class="text-red-600 hover:underline flex items-center gap-1">
+                                        <i class="ph ph-trash"></i>
+                                    </a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

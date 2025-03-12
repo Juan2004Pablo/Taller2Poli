@@ -1,0 +1,2 @@
+Insert into clients(name,lastname,email,created_at) values('juan', 'pabon', 'juan@mail.com', '2024-10-15');
+Insert into clients(name,lastname,email,created_at) values('Miguel', 'Gaviria', 'miguel@mail.com', '2012-07-10');

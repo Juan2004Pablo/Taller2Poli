@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <title>Add Client</title>
+</head>
+<body class="bg-gray-50 text-gray-800">
+    <div class="max-w-4xl mx-auto py-10">
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <div class="flex items-center mb-6">
+                <a href="/clients/list" class="text-gray-500 hover:text-gray-700 mr-4 text-lg">
+                    <i class="ph ph-arrow-left"></i>
+                </a>
+                <h1 class="text-3xl font-semibold text-gray-700">Add Client</h1>
+            </div>
+            <form th:action="@{/clients/store}" method="post" class="space-y-4">
+                <div>
+                    <label class="block text-gray-600 mb-1">Name</label>
+                    <div class="relative">
+                        <i class="ph ph-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" name="name" placeholder="Name" 
+                            class="w-full p-3 pl-10 border border-gray-300 rounded-lg shadow-sm 
+                                    hover:border-orange-500 focus:border-orange-500 
+                                    focus:outline-none focus:ring-0">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-600 mb-1">Last Name</label>
+                    <div class="relative">
+                        <i class="ph ph-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" name="lastname" placeholder="Last Name" 
+                            class="w-full p-3 pl-10 border border-gray-300 rounded-lg shadow-sm 
+                                    hover:border-orange-500 focus:border-orange-500 
+                                    focus:outline-none focus:ring-0">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-gray-600 mb-1">Email</label>
+                    <div class="relative">
+                        <i class="ph ph-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="email" name="email" placeholder="Email" 
+                            class="w-full p-3 pl-10 border border-gray-300 rounded-lg shadow-sm 
+                                    hover:border-orange-500 focus:border-orange-500 
+                                    focus:outline-none focus:ring-0">
+                    </div>
+                </div>
+                
+                <div class="mt-6 flex justify-end">
+                    <button type="submit" class="bg-orange-500 hover:bg-orange-700 text-white px-4 py-2 rounded-lg shadow flex items-center">
+                        <i class="ph ph-floppy-disk mr-2"></i> Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
