@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full bg-white">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <title>Home</title>
+</head>
+
+<body class="h-full">
+    <div class="min-h-full">
+        <nav class="bg-gray-800">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="shrink-0">
+                            <!--<img class="size-8" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">-->
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                                <a href="/" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
+                                    aria-current="page">Home</a>
+                                <a href="/clients/list"
+                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Clients</a>
+                                <a href="/products/index"
+                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Products</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-4 flex items-center md:ml-6">
+                            <button type="button"
+                                class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
+                                <span class="absolute -inset-1.5"></span>
+                                <span class="sr-only">View notifications</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                </svg>
+                            </button>
+
+                            <!-- Profile dropdown -->
+                            <div class="relative ml-3">
+                                <div>
+                                    <button type="button"
+                                        class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+                                        id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                        <span class="absolute -inset-1.5"></span>
+                                        <span class="sr-only">Open user menu</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <!--<div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                    Active: "bg-gray-100 outline-hidden", Not Active: ""
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                    </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <header class="bg-white shadow-xs">
+            <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+                <h1 class="text-lg/6 font-semibold text-gray-900">Home</h1>
+            </div>
+        </header>
+        <main>
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                    <div th:each="product : ${products}">
+                        <div class="relative">
+                            <a th:href="@{/home/show/{id}(id=${product.id})}">
+                                <div class="relative h-72 w-full overflow-hidden rounded-lg">
+                                    <!--<img th:src="${product.imageUrl}" alt="Product Image" class="size-full object-cover">-->
+                                </div>
+                            </a>
+                            <div class="relative mt-4">
+                                <a th:href="@{/home/show/{id}(id=${product.id})}" class="text-lg font-bold text-gray-900">
+                                    <h3 th:text="${product.name}">Product Name</h3>
+                                </a>
+                                <p class="mt-1 text-sm text-gray-500" th:text="${product.description}">Product Description</p>
+                                <p class="text-2xl font-extrabold text-blue-600 mt-3" th:text="${product.price}">Price</p>
+                            </div>
+                            <div class="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
+                                <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"></div>
+                                <a th:href="@{/home/show/{id}(id=${product.id})}" class="relative text-white text-xl">
+                                    <i class="ph ph-eye"></i>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="mt-3 flex items-center space-x-4">
+                            <button class="quantity-btn px-3 py-1 bg-gray-200 rounded-md" data-action="decrease">−</button>
+                            <span class="quantity text-lg font-semibold" data-quantity="1">1</span>
+                            <button class="quantity-btn px-3 py-1 bg-gray-200 rounded-md" data-action="increase">+</button>
+                            <button class="add-to-bag inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-700 whitespace-nowrap">
+                                <i class="ph ph-shopping-cart text-lg"></i>
+                                <span>Buy now</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+        
+    </div>
+
+    <script>
+        document.querySelectorAll(".quantity-btn").forEach(button => {
+            button.addEventListener("click", function () {
+                let quantityElement = this.parentElement.querySelector("[data-quantity]");
+                let currentQuantity = parseInt(quantityElement.textContent);
+
+                if (this.dataset.action === "increase") {
+                    quantityElement.textContent = currentQuantity + 1;
+                } else if (this.dataset.action === "decrease" && currentQuantity > 1) {
+                    quantityElement.textContent = currentQuantity - 1;
+                }
+            });
+        });
+
+        document.querySelectorAll(".add-to-bag").forEach(button => {
+            button.addEventListener("click", function () {
+                let quantity = this.parentElement.querySelector("[data-quantity]").textContent;
+                alert(`Agregaste ${quantity} unidades al carrito.`);
+            });
+        });
+
+        document.querySelectorAll(".text-2xl").forEach(priceElement => {
+            let price = parseFloat(priceElement.textContent);
+            priceElement.textContent = new Intl.NumberFormat("es-CO", {
+                style: "currency",
+                currency: "COP",
+                minimumFractionDigits: 0
+            }).format(price);
+        });
+    </script>
+</body>
+
+</html>

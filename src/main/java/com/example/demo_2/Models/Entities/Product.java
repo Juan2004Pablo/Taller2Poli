@@ -22,6 +22,7 @@ public class Product implements Serializable {
     private Long id;
 
     private String name;
+    private String description;
     private int stock;
     private Long price;
 
@@ -34,9 +35,10 @@ public class Product implements Serializable {
         this.createdAt = new Date();
     }
 
-    public Product(Long id, String name, int stock, Long price) {
+    public Product(Long id, String name, String description, int stock, Long price) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.stock = stock;
         this.price = price;
     }
@@ -54,6 +56,10 @@ public class Product implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public void setName(String name) {
@@ -89,4 +95,8 @@ public class Product implements Serializable {
     }
 
     private static final long serialVersionUID = 1L;
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }
