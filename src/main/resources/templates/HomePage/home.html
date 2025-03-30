@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <title>Home</title>
+    <title>Shopping cart</title>
 </head>
 
 <body class="h-full">
@@ -33,9 +33,10 @@
                     <div class="hidden md:block">
                         <div class="ml-4 flex items-center md:ml-6">
                             <button type="button"
-                                class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
+                                class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+                                onclick="window.location.href='/shopping-cart'">
                                 <span class="absolute -inset-1.5"></span>
-                                <span class="sr-only">View notifications</span>
+                                <span class="sr-only">Shopping cart</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.5" stroke="currentColor" class="size-6">
                                     <path stroke-linecap="round" stroke-linejoin="round"
@@ -88,49 +89,58 @@
                                 </div>
                             </a>
                             <div class="relative mt-4">
-                                <a th:href="@{/home/show/{id}(id=${product.id})}" class="text-lg font-bold text-gray-900">
+                                <a th:href="@{/home/show/{id}(id=${product.id})}"
+                                    class="text-lg font-bold text-gray-900">
                                     <h3 th:text="${product.name}">Product Name</h3>
                                 </a>
-                                <p class="mt-1 text-sm text-gray-500" th:text="${product.description}">Product Description</p>
-                                <p class="text-2xl font-extrabold text-blue-600 mt-3" th:text="${product.price}">Price</p>
+                                <p class="mt-1 text-sm text-gray-500" th:text="${product.description}">Product
+                                    Description</p>
+                                <p class="text-2xl font-extrabold text-blue-600 mt-3" th:text="${product.price}">Price
+                                </p>
                             </div>
-                            <div class="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
-                                <div aria-hidden="true" class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50"></div>
+                            <div
+                                class="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
+                                <div aria-hidden="true"
+                                    class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50">
+                                </div>
                                 <a th:href="@{/home/show/{id}(id=${product.id})}" class="relative text-white text-xl">
                                     <i class="ph ph-eye"></i>
                                 </a>
                             </div>
                         </div>
-                        <div class="mt-3 flex items-center space-x-4">
-                            <button class="quantity-btn px-3 py-1 bg-gray-200 rounded-md" data-action="decrease">−</button>
-                            <span class="quantity text-lg font-semibold" data-quantity="1">1</span>
-                            <button class="quantity-btn px-3 py-1 bg-gray-200 rounded-md" data-action="increase">+</button>
-                            <button class="add-to-bag inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-700 whitespace-nowrap">
+
+                        <!--<form action="/shopping-cart/add/1" method="get" class="flex items-center space-x-3">
+                            <label for="quantity" class="text-sm font-medium text-gray-700">Cantidad:</label>
+                            <input type="number" id="quantity" name="quantity" min="1" value="1" required
+                                class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+
+                            <button type="submit"
+                                class="add-to-bag inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-700 whitespace-nowrap">
                                 <i class="ph ph-shopping-cart text-lg"></i>
                                 <span>Buy now</span>
                             </button>
-                        </div>
+                        </form>-->
+
+                        <form th:action="@{/shopping-cart/add/{id}(id=${product.id})}" method="post"
+                            class="flex items-center space-x-3">
+                            <label for="quantity" class="text-sm font-medium text-gray-700">Cantidad:</label>
+                            <input type="number" id="quantity" name="quantity" min="1" th:attr="max=${product.stock}"
+                                value="1" required
+                                class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                            <button type="submit"
+                                class="add-to-bag inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-700 whitespace-nowrap">
+                                <i class="ph ph-shopping-cart text-lg"></i>
+                                <span>Buy now</span>
+                            </button>
+                        </form>
+
                     </div>
                 </div>
             </div>
         </main>
-        
     </div>
 
     <script>
-        document.querySelectorAll(".quantity-btn").forEach(button => {
-            button.addEventListener("click", function () {
-                let quantityElement = this.parentElement.querySelector("[data-quantity]");
-                let currentQuantity = parseInt(quantityElement.textContent);
-
-                if (this.dataset.action === "increase") {
-                    quantityElement.textContent = currentQuantity + 1;
-                } else if (this.dataset.action === "decrease" && currentQuantity > 1) {
-                    quantityElement.textContent = currentQuantity - 1;
-                }
-            });
-        });
-
         document.querySelectorAll(".add-to-bag").forEach(button => {
             button.addEventListener("click", function () {
                 let quantity = this.parentElement.querySelector("[data-quantity]").textContent;
