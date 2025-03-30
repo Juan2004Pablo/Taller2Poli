@@ -40,6 +40,7 @@ public class ProductServiceImp implements IProductService {
 
         if (existingProduct != null) {
             existingProduct.setName(product.getName());
+            existingProduct.setDescription(product.getDescription());
             existingProduct.setPrice(product.getPrice());
             existingProduct.setStock(product.getStock());
             productDao.update(existingProduct);

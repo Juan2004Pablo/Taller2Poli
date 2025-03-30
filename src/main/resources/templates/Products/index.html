@@ -1,65 +1,152 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full bg-white">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <title>Product List</title>
+    <title>Products</title>
 </head>
-<body class="bg-gray-50 text-gray-800">
-    <div class="max-w-6xl mx-auto py-10">
-        <div class="bg-white shadow-lg rounded-lg p-6">
-            <div class="flex justify-between items-center mb-6">
-                <h1 class="text-3xl font-semibold text-gray-700 underline">Product List</h1>
-                <div class="flex gap-3">
-                    <a href="/" class="bg-gray-500 hover:bg-gray-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
-                        <i class="ph ph-arrow-left"></i>
-                        Back to Menu
-                    </a>
-                    <a href="/products/create" class="bg-orange-500 hover:bg-orange-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
-                        <i class="ph ph-plus"></i>
-                        Add Product
-                    </a>
+
+<body class="h-full">
+    <div class="min-h-full">
+        <nav class="bg-gray-800">
+            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div class="flex h-16 items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="shrink-0">
+                            <!--<img class="size-8" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">-->
+                        </div>
+                        <div class="hidden md:block">
+                            <div class="ml-10 flex items-baseline space-x-4">
+                                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
+                                <a href="/"
+                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                                    aria-current="page">Home</a>
+                                <a href="/clients/list"
+                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Clients</a>
+                                <a href="/products/index"
+                                    class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Products</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-4 flex items-center md:ml-6">
+                            <button type="button"
+                                class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+                                onclick="window.location.href='/shopping-cart'">
+                                <span class="absolute -inset-1.5"></span>
+                                <span class="sr-only">Shopping cart</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                </svg>
+                            </button>
+
+                            <!-- Profile dropdown -->
+                            <div class="relative ml-3">
+                                <div>
+                                    <button type="button"
+                                        class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+                                        id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                        <span class="absolute -inset-1.5"></span>
+                                        <span class="sr-only">Open user menu</span>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                            stroke-width="1.5" stroke="currentColor" class="size-6">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                                        </svg>
+                                    </button>
+                                </div>
+
+                                <!--<div class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
+                    Active: "bg-gray-100 outline-hidden", Not Active: ""
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                    </div>-->
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="overflow-x-auto">
-                <table class="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
-                    <thead class="bg-gray-100 text-gray-500">
-                        <tr>
-                            <th class="p-3 text-left gap-1"><i class="ph ph-hash"></i>ID</th>
-                            <th class="p-3 text-left gap-1"><i class="ph ph-tag"></i>Name</th>
-                            <th class="p-3 text-left gap-1"><i class="ph ph-currency-dollar"></i>Price</th>
-                            <th class="p-3 text-left gap-1"><i class="ph ph-archive"></i>Stock</th>
-                            <th class="p-3 text-left gap-1"><i class="ph ph-calendar"></i>Created at</th>
-                            <th class="p-3 text-center"></th>
-                        </tr>
-                    </thead>
-                    <tbody class="divide-y divide-gray-200">
-                        <tr th:each="product : ${products}" class="hog-gray-100">
-                            <td class="p-3" th:text="${product.id}"></td>
-                            <td class="p-3" th:text="${product.name}"></td>
-                            <td class="p-3" th:text="${product.price}"></td>
-                            <td class="p-3" th:text="${product.stock}"></td>
-                            <td class="p-3" th:text="${#dates.format(product.createdAt, 'dd/MM/yyyy')}"></td>
-                            <td class="p-3 text-center">
-                                <div class="flex justify-center space-x-3">
-                                    <a th:href="@{/products/{id}(id=${product.id})}" class="text-blue-600 hover:underline flex items-center gap-1">
-                                        <i class="ph ph-eye"></i>
-                                    </a>
-                                    <a th:href="@{/products/edit/{id}(id=${product.id})}" class="text-yellow-600 hover:underline flex items-center gap-1">
-                                        <i class="ph ph-pencil"></i>
-                                    </a>
-                                    <a th:href="@{/products/delete/{id}(id=${product.id})}" class="text-red-600 hover:underline flex items-center gap-1">
-                                        <i class="ph ph-trash"></i>
-                                    </a>
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+        </nav>
+
+        <header class="bg-white shadow-xs">
+            <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+                <h1 class="text-lg/6 font-semibold text-gray-900">Products</h1>
             </div>
-        </div>
+        </header>
+        <main>
+            <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
+                <div class="bg-white shadow-lg rounded-lg p-6">
+                    <div class="flex justify-between items-center mb-6">
+                        <h1 class="text-3xl font-semibold text-gray-700 underline"></h1>
+                        <div class="flex gap-3">
+                            <a href="/products/create"
+                                class="bg-orange-500 hover:bg-orange-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
+                                <i class="ph ph-plus"></i>
+                                Add Product
+                            </a>
+                        </div>
+                    </div>
+                    <div class="overflow-x-auto">
+                        <table class="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">
+                                        <i class="ph ph-identification-card"></i> ID
+                                    </th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">
+                                        <i class="ph ph-box"></i> Name
+                                    </th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">
+                                        <i class="ph ph-tag"></i> Price
+                                    </th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">
+                                        <i class="ph ph-archive"></i> Stock
+                                    </th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">
+                                        <i class="ph ph-calendar"></i> Date Added
+                                    </th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">
+                                        <i class="ph ph-gear"></i> Actions
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody class="divide-y divide-gray-200">
+                                <tr th:each="product : ${products}" class="hog-gray-100">
+                                    <td class="p-3" th:text="${product.id}"></td>
+                                    <td class="p-3" th:text="${product.name}"></td>
+                                    <td class="p-3" th:text="${product.price}"></td>
+                                    <td class="p-3" th:text="${product.stock}"></td>
+                                    <td class="p-3" th:text="${#dates.format(product.createdAt, 'dd/MM/yyyy')}"></td>
+                                    <td class="p-3 text-center">
+                                        <div class="flex justify-center space-x-3">
+                                            <a th:href="@{/products/{id}(id=${product.id})}"
+                                                class="text-blue-600 hover:underline flex items-center gap-1">
+                                                <i class="ph ph-eye"></i>
+                                            </a>
+                                            <a th:href="@{/products/edit/{id}(id=${product.id})}"
+                                                class="text-yellow-600 hover:underline flex items-center gap-1">
+                                                <i class="ph ph-pencil"></i>
+                                            </a>
+                                            <a th:href="@{/products/delete/{id}(id=${product.id})}"
+                                                class="text-red-600 hover:underline flex items-center gap-1">
+                                                <i class="ph ph-trash"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </main>
     </div>
 </body>
+
 </html>

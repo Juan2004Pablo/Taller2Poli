@@ -1,17 +1,4 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <title>Client List</title>
-</head>
-
-</html>
-
-<!DOCTYPE html>
 <html lang="en" class="h-full bg-white">
 
 <head>
@@ -19,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <title>Clients</title>
+    <title>Shopping cart</title>
 </head>
 
 <body class="h-full">
@@ -34,11 +21,10 @@
                         <div class="hidden md:block">
                             <div class="ml-10 flex items-baseline space-x-4">
                                 <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                                <a href="/"
-                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white"
+                                <a href="/" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
                                     aria-current="page">Home</a>
                                 <a href="/clients/list"
-                                    class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Clients</a>
+                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Clients</a>
                                 <a href="/products/index"
                                     class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Products</a>
                             </div>
@@ -89,75 +75,88 @@
 
         <header class="bg-white shadow-xs">
             <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-                <h1 class="text-lg/6 font-semibold text-gray-900">Clients</h1>
+                <h1 class="text-lg/6 font-semibold text-gray-900">Home</h1>
             </div>
         </header>
         <main>
-            <div class="">
-                <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-                    <div class="bg-white shadow-lg rounded-lg p-6">
-                        <div class="flex justify-between items-center mb-6">
-                            <h1 class="text-3xl font-semibold text-gray-700 underline"></h1>
-                            <div class="flex gap-3">
-                                <a href="/clients/create"
-                                    class="bg-orange-500 hover:bg-orange-700 text-white px-4 py-2 rounded-lg shadow flex items-center gap-2">
-                                    <i class="ph ph-plus"></i>
-                                    Add Client
+            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
+                    <div th:each="product : ${products}">
+                        <div class="relative">
+                            <a th:href="@{/home/show/{id}(id=${product.id})}">
+                                <div class="relative h-72 w-full overflow-hidden rounded-lg">
+                                    <!--<img th:src="${product.imageUrl}" alt="Product Image" class="size-full object-cover">-->
+                                </div>
+                            </a>
+                            <div class="relative mt-4">
+                                <a th:href="@{/home/show/{id}(id=${product.id})}"
+                                    class="text-lg font-bold text-gray-900">
+                                    <h3 th:text="${product.name}">Product Name</h3>
+                                </a>
+                                <p class="mt-1 text-sm text-gray-500" th:text="${product.description}">Product
+                                    Description</p>
+                                <p class="text-2xl font-extrabold text-blue-600 mt-3" th:text="${product.price}">Price
+                                </p>
+                            </div>
+                            <div
+                                class="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
+                                <div aria-hidden="true"
+                                    class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50">
+                                </div>
+                                <a th:href="@{/home/show/{id}(id=${product.id})}" class="relative text-white text-xl">
+                                    <i class="ph ph-eye"></i>
                                 </a>
                             </div>
                         </div>
-                        <div class="overflow-x-auto">
-                            <table class="w-full border-collapse bg-white shadow-md rounded-lg overflow-hidden">
-                                <thead class="bg-gray-100">
-                                    <tr>
-                                        <th class="border border-gray-300 px-4 py-2 text-left">
-                                            <i class="ph ph-identification-card"></i> ID
-                                        </th>
-                                        <th class="border border-gray-300 px-4 py-2 text-left">
-                                            <i class="ph ph-user"></i> Name
-                                        </th>
-                                        <th class="border border-gray-300 px-4 py-2 text-left">
-                                            <i class="ph ph-envelope"></i> Email
-                                        </th>
-                                        <th class="border border-gray-300 px-4 py-2 text-left">
-                                            <i class="ph ph-calendar"></i> Date Registered
-                                        </th>
-                                        <th class="border border-gray-300 px-4 py-2 text-left">
-                                            <i class="ph ph-gear"></i> Actions
-                                        </th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-gray-200">
-                                    <tr th:each="client : ${clients}" class="hog-gray-100">
-                                        <td class="p-3" th:text="${client.id}"></td>
-                                        <td class="p-3" th:text="${client.name} + ' ' + ${client.lastname}"></td>
-                                        <td class="p-3" th:text="${client.email}"></td>
-                                        <td class="p-3" th:text="${#dates.format(client.createdAt, 'dd/MM/yyyy')}"></td>
-                                        <td class="p-3 text-center">
-                                            <div class="flex justify-center space-x-3">
-                                                <a th:href="@{/clients/{id}(id=${client.id})}"
-                                                    class="text-blue-600 hover:underline flex items-center gap-1">
-                                                    <i class="ph ph-eye"></i>
-                                                </a>
-                                                <a th:href="@{/clients/edit/{id}(id=${client.id})}"
-                                                    class="text-yellow-600 hover:underline flex items-center gap-1">
-                                                    <i class="ph ph-pencil"></i>
-                                                </a>
-                                                <a th:href="@{/clients/delete/{id}(id=${client.id})}"
-                                                    class="text-red-600 hover:underline flex items-center gap-1">
-                                                    <i class="ph ph-trash"></i>
-                                                </a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
+
+                        <!--<form action="/shopping-cart/add/1" method="get" class="flex items-center space-x-3">
+                            <label for="quantity" class="text-sm font-medium text-gray-700">Cantidad:</label>
+                            <input type="number" id="quantity" name="quantity" min="1" value="1" required
+                                class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+
+                            <button type="submit"
+                                class="add-to-bag inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-700 whitespace-nowrap">
+                                <i class="ph ph-shopping-cart text-lg"></i>
+                                <span>Buy now</span>
+                            </button>
+                        </form>-->
+
+                        <form th:action="@{/shopping-cart/add/{id}(id=${product.id})}" method="post"
+                            class="flex items-center space-x-3">
+                            <label for="quantity" class="text-sm font-medium text-gray-700">Cantidad:</label>
+                            <input type="number" id="quantity" name="quantity" min="1" th:attr="max=${product.stock}"
+                                value="1" required
+                                class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                            <button type="submit"
+                                class="add-to-bag inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-700 whitespace-nowrap">
+                                <i class="ph ph-shopping-cart text-lg"></i>
+                                <span>Buy now</span>
+                            </button>
+                        </form>
+
                     </div>
                 </div>
             </div>
         </main>
     </div>
+
+    <script>
+        document.querySelectorAll(".add-to-bag").forEach(button => {
+            button.addEventListener("click", function () {
+                let quantity = this.parentElement.querySelector("[data-quantity]").textContent;
+                alert(`Agregaste ${quantity} unidades al carrito.`);
+            });
+        });
+
+        document.querySelectorAll(".text-2xl").forEach(priceElement => {
+            let price = parseFloat(priceElement.textContent);
+            priceElement.textContent = new Intl.NumberFormat("es-CO", {
+                style: "currency",
+                currency: "COP",
+                minimumFractionDigits: 0
+            }).format(price);
+        });
+    </script>
 </body>
 
 </html>
