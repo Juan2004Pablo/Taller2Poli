@@ -7,6 +7,7 @@ import com.example.demo_2.Models.Entities.User;
 import com.example.demo_2.Models.Services.Cart.CartService;
 import com.example.demo_2.Models.Services.Product.IProductService;
 
+import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,10 +28,10 @@ public class CartController {
         Detail cartDetail = cartService.getCartDetailById();
 
         // Calcular el total de la compra
-        Long totalAmount = cartService.getTotalAmount(cartDetail.getId());
+       // Long totalAmount = cartService.getTotalAmount(cartDetail.getId());
 
         model.addAttribute("cartDetail", cartDetail);
-        model.addAttribute("totalAmount", totalAmount);
+//        model.addAttribute("totalAmount", totalAmount);
 
         return "ShoppingCart/index";
     }
@@ -43,7 +44,7 @@ public class CartController {
         // quantity = 3;
 
         // Buscar el producto en la base de datos
-        Product product = productService.show(productId);
+        java.util.Optional<Product> product = productService.findById(productId);
         if (product == null) {
             return "redirect:/shopping-cart?error=ProductNotFound";
         }
@@ -57,8 +58,8 @@ public class CartController {
             cartService.store(detail);
         }
 
-        // Agregar el producto al carrito con cantidad 1
-        cartService.addProductToCart(detail.getId(), productId, quantity);
+      // Agregar el producto al carrito con cantidad 1
+ //       cartService.addProductToCart(detail.getId(), productId, quantity);
 
         return "redirect:/shopping-cart";
     }

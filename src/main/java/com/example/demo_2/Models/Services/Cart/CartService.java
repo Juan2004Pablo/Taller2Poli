@@ -42,12 +42,12 @@ public class CartService implements IDetailService {
         return detail;
     }
 
-    public void addProductToCart(Long detailId, Long productId, int quantity) {
-        Product product = productService.show(productId);
-        if (product != null) {
-            detailDao.addProductToDetail(detailId, product, quantity);
-        }
-    }
+    // public void addProductToCart(Long detailId, Long productId, int quantity) {
+    //     Product product = productService.findById(productId);
+    //     if (product != null) {
+    //         detailDao.addProductToDetail(detailId, product, quantity);
+    //     }
+    // }
 
     public void addToCart(Product product) {
         for (Detail detail : cartDetails) {
@@ -107,17 +107,17 @@ public class CartService implements IDetailService {
         detailDao.update(detail);
     }
 
-    public Long getTotalAmount(Long detailId) {
-        Detail detail = this.show(detailId);
+    // public Long getTotalAmount(Long detailId) {
+    //     Detail detail = this.show(detailId);
 
-        if (detail == null || detail.getDetailProducts().isEmpty()) {
-            return 0L; // Retorna 0 si el carrito está vacío
-        }
+    //     if (detail == null || detail.getDetailProducts().isEmpty()) {
+    //         return 0L; // Retorna 0 si el carrito está vacío
+    //     }
 
-        return detail.getDetailProducts().stream()
-                .mapToLong(dp -> dp.getProduct().getPrice() * dp.getQuantity())
-                .sum();
-    }
+    //     return detail.getDetailProducts().stream()
+    //             .mapToLong(dp -> dp.getProduct().getPrice() * dp.getQuantity())
+    //             .sum();
+    // }
 
     // Método auxiliar para obtener la cantidad de un producto en el detail
     private int getQuantityForProduct(Detail detail, Product product) {

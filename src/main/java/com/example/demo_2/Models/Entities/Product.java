@@ -1,96 +1,103 @@
 package com.example.demo_2.Models.Entities;
 
-import java.io.Serializable;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 import jakarta.persistence.*;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "products")
-public class Product implements Serializable {
-
+@Table(name = "Products")
+public class Product {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idProduct") // Asegúrate que coincida con el nombre en la BD
     private Long id;
-
+    
+    @ManyToOne
+    @JoinColumn(name = "idCategory") // Asegúrate que coincida con el nombre en la BD
+    private Category category;
+    
+    @Column(name = "Name")
     private String name;
+    
+    @Column(name = "Description")
     private String description;
-    private int stock;
-    private Long price;
-
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-
-    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Set<DetailProduct> detailProducts = new HashSet<>();
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = new Date();
-    }
-
-    public Product(Long id, String name, String description, int stock, Long price) {
-        this.id = id;
-        this.name = name;
-        this.description = description;
-        this.stock = stock;
-        this.price = price;
-    }
-
-    public Product() {
-    }
+    
+    @Column(name = "Image")
+    private String image;
+    
+    @Column(name = "Stock")
+    private Integer stock;
+    
+    @Column(name = "Price")
+    private BigDecimal price;
+    
+    @Column(name = "Created_at")
+    private LocalDateTime createdAt;
 
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
+
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
+
     public String getDescription() {
         return description;
     }
+
     public void setDescription(String description) {
         this.description = description;
     }
-    public int getStock() {
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public Integer getStock() {
         return stock;
     }
-    public void setStock(int stock) {
+
+    public void setStock(Integer stock) {
         this.stock = stock;
     }
-    public Long getPrice() {
+
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
-    public Date getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-    public void setCreatedAt(Date createdAt) {
+
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-    public Set<DetailProduct> getDetailProducts() {
-        return detailProducts;
-    }
-
-    public void setDetailProducts(Set<DetailProduct> detailProducts) {
-        this.detailProducts = detailProducts;
-    }
-
-    public static long getSerialVersionuid() {
-        return serialVersionUID;
-    }
-
-    private static final long serialVersionUID = 1L;
+    
+    
 }

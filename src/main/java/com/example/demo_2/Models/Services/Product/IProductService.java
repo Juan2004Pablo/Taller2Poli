@@ -1,13 +1,14 @@
 package com.example.demo_2.Models.Services.Product;
 
-import java.util.List;
-
 import com.example.demo_2.Models.Entities.Product;
+import java.util.List;
+import java.util.Optional;
 
 public interface IProductService {
-    public List<Product> index();
-    public Product show(Long id);
-    public void store(Product product);
-    public void update(Long id, Product product);
-    public void delete(Long id);
+    List<Product> findAll();
+    Product findById(Long id);  // Aquí el tipo de retorno debe ser Product
+    void save(Product product);
+    void update(Product product);
+    void delete(Long id);
+    List<Product> findByName(String name);
 }

@@ -1,19 +1,18 @@
 package com.example.demo_2.Models.DAO.Detail;
 
-import java.util.List;
-
-import com.example.demo_2.Models.Entities.Client;
 import com.example.demo_2.Models.Entities.Detail;
 import com.example.demo_2.Models.Entities.DetailProduct;
 import com.example.demo_2.Models.Entities.Product;
-
-import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
-
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.TypedQuery;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-@Repository
+import java.util.List;
+import java.util.Optional;
+
+@Component
 public class DetailDaoImp implements IDetailDao {
 
     @PersistenceContext
@@ -22,59 +21,78 @@ public class DetailDaoImp implements IDetailDao {
     @Override
     @Transactional(readOnly = true)
     public List<Detail> findAll() {
-        return em.createQuery("from Detail", Detail.class).getResultList();
+        TypedQuery<Detail> query = em.createQuery("SELECT d FROM Detail d", Detail.class);
+        return query.getResultList();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Detail show(Long id) {
-        return em.find(Detail.class, id);
+    public Optional<Detail> findById(Long id) {
+        Detail detail = em.find(Detail.class, id);
+        return Optional.ofNullable(detail);
     }
 
     @Override
     @Transactional
-    public void store(Detail detail) {
-        em.persist(detail);
-    }
-
-    @Override
-    @Transactional
-    public void delete(Long id) {
-        Detail detail = show(id);
-
-        if (detail != null) {
-            em.remove(detail);
+    public Detail save(Detail detail) {
+        if (detail.getId() == null) {
+            em.persist(detail);
+            return detail;
         }
+        return em.merge(detail);
+    }
+
+    @Override
+    @Transactional
+    public void deleteById(Long id) {
+        findById(id).ifPresent(detail -> {
+            // Eliminar primero los DetailProduct asociados
+            em.createQuery("DELETE FROM DetailProduct dp WHERE dp.detail.id = :detailId")
+              .setParameter("detailId", id)
+              .executeUpdate();
+            
+            // Luego eliminar el Detail
+            em.remove(detail);
+        });
+    }
+
+    @Override
+    @Transactional
+    public Detail update(Detail detail) {
+        return em.merge(detail);
     }
 
     @Override
     @Transactional
     public void addProductToDetail(Long detailId, Product product, int quantity) {
         Detail detail = em.find(Detail.class, detailId);
-
-        if (detail != null) {
-            // Buscar si el producto ya está en el detalle
-            for (DetailProduct dp : detail.getDetailProducts()) {
-                if (dp.getProduct().getId().equals(product.getId())) {
-                    // Si ya existe, incrementamos la cantidad
-                    dp.setQuantity(dp.getQuantity() + quantity);
-                    em.merge(dp);
-                    return;
-                }
-            }
-
-            // Si el producto no está en el detalle, lo añadimos
-            DetailProduct newDetailProduct = new DetailProduct(detail, product, quantity);
-            detail.getDetailProducts().add(newDetailProduct);
-
-            em.persist(newDetailProduct); // Guardamos en la tabla pivote
-            em.merge(detail); // Actualizamos el detalle
+        if (detail == null) {
+            throw new IllegalArgumentException("Detail not found with id: " + detailId);
         }
-    }
 
-    @Override
-    @Transactional
-    public void update(Detail detail) {
-        em.merge(detail);
+        Product managedProduct = em.find(Product.class, product.getId());
+        if (managedProduct == null) {
+            throw new IllegalArgumentException("Product not found with id: " + product.getId());
+        }
+
+        // Buscar si ya existe la relación
+        TypedQuery<DetailProduct> query = em.createQuery(
+            "SELECT dp FROM DetailProduct dp WHERE dp.detail.id = :detailId AND dp.product.id = :productId", 
+            DetailProduct.class);
+        query.setParameter("detailId", detailId);
+        query.setParameter("productId", managedProduct.getId());
+        
+        List<DetailProduct> results = query.getResultList();
+        
+        if (!results.isEmpty()) {
+            // Actualizar cantidad si ya existe
+            DetailProduct existing = results.get(0);
+            existing.setQuantity(existing.getQuantity() + quantity);
+            em.merge(existing);
+        } else {
+            // Crear nueva relación
+            DetailProduct newDetailProduct = new DetailProduct(detail, managedProduct, quantity);
+            em.persist(newDetailProduct);
+        }
     }
 }
