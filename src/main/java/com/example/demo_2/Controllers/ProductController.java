@@ -2,7 +2,7 @@ package com.example.demo_2.Controllers;
 
 import com.example.demo_2.Models.Entities.Product;
 import com.example.demo_2.Models.Services.Product.IProductService;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ public class ProductController {
     
     private final IProductService productService;
 
-    @Autowired
+    //@Autowired
     public ProductController(IProductService productService) {
         this.productService = productService;
     }
@@ -27,8 +27,7 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable Long id, Model model) {
-        Product product = productService.findById(id)
-            .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        Product product = productService.findById(id);            
         model.addAttribute("product", product);
         return "Products/show";
     }
@@ -48,8 +47,7 @@ public class ProductController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-        Product product = productService.findById(id)
-            .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
+        Product product = productService.findById(id);
         model.addAttribute("product", product);
         return "Products/edit";
     }

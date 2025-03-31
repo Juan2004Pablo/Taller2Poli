@@ -2,7 +2,7 @@ package com.example.demo_2.Models.Services.Product;
 
 import com.example.demo_2.Models.DAO.Product.IProductDao;
 import com.example.demo_2.Models.Entities.Product;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -12,7 +12,7 @@ public class ProductServiceImp implements IProductService {
 
     private final IProductDao productDao;
 
-    @Autowired
+   // @Autowired
     public ProductServiceImp(IProductDao productDao) {
         this.productDao = productDao;
     }

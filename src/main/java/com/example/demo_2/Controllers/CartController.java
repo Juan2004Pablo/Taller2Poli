@@ -1,13 +1,13 @@
 package com.example.demo_2.Controllers;
 
 import com.example.demo_2.Models.Entities.Detail;
-import com.example.demo_2.Models.Entities.DetailProduct;
-import com.example.demo_2.Models.Entities.Product;
-import com.example.demo_2.Models.Entities.User;
+//import com.example.demo_2.Models.Entities.DetailProduct;
+//import com.example.demo_2.Models.Entities.Product;
+//import com.example.demo_2.Models.Entities.User;
 import com.example.demo_2.Models.Services.Cart.CartService;
 import com.example.demo_2.Models.Services.Product.IProductService;
 
-import org.apache.el.stream.Optional;
+//import org.apache.el.stream.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -44,10 +44,10 @@ public class CartController {
         // quantity = 3;
 
         // Buscar el producto en la base de datos
-        java.util.Optional<Product> product = productService.findById(productId);
-        if (product == null) {
-            return "redirect:/shopping-cart?error=ProductNotFound";
-        }
+        // Product <Product> product = productService.findById(productId);
+        // if (product == null) {
+        //     return "redirect:/shopping-cart?error=ProductNotFound";
+        // }
 
         // Buscar el detail asociado y activo del usuario, o crear uno nuevo si no
         // existe

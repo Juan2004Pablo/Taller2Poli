@@ -2,7 +2,7 @@ package com.example.demo_2.Models.Services.Product;
 
 import com.example.demo_2.Models.DAO.Product.ICategoryDao;
 import com.example.demo_2.Models.Entities.Category;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
@@ -13,7 +13,7 @@ public class CategoryServiceImp implements ICategoryService {
 
     private final ICategoryDao categoryDao;
 
-    @Autowired
+    //@Autowired
     public CategoryServiceImp(ICategoryDao categoryDao) {
         this.categoryDao = categoryDao;
     }
