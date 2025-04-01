@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: layout(~{::title}, ~{::section})}">
+<head>
+    <title th:text="'Products in ' + ${category.categoryName}"></title>
+</head>
+<body>
+    <section>
+        <div class="d-flex justify-content-between mb-3">
+            <h2 th:text="'Products in ' + ${category.categoryName}"></h2>
+            <a href="/products" class="btn btn-secondary">Back to All Products</a>
+        </div>
+        
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="product : ${products}">
+                    <td th:text="${product.idProduct}"></td>
+                    <td th:text="${product.name}"></td>
+                    <td th:text="${product.price}"></td>
+                    <td th:text="${product.stock}"></td>
+                    <td>
+                        <a th:href="@{/products/edit/{id}(id=${product.idProduct})}" class="btn btn-sm btn-warning">Edit</a>
+                        <a th:href="@{/products/delete/{id}(id=${product.idProduct})}" class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${category.idCategory == null} ? 'Nueva Categoría' : 'Editar Categoría'"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .form-container {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .image-preview {
+            max-width: 200px;
+            max-height: 200px;
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <div class="form-container">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h2 class="mb-0" th:text="${category.idCategory == null} ? 'Nueva Categoría' : 'Editar Categoría'"></h2>
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/categories}" th:object="${category}" method="post">
+                        <input type="hidden" th:field="*{idCategory}">
+                        
+                        <div class="mb-3">
+                            <label for="categoryName" class="form-label">Nombre de la categoría</label>
+                            <input type="text" class="form-control" id="categoryName" 
+                                   th:field="*{categoryName}" required
+                                   placeholder="Ej. Electrónicos, Ropa, etc.">
+                            <div class="invalid-feedback">Por favor ingresa un nombre válido</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="image" class="form-label">URL de la imagen</label>
+                            <input type="url" class="form-control" id="image" 
+                                   th:field="*{image}" required
+                                   placeholder="https://ejemplo.com/imagen.jpg">
+                            <div class="invalid-feedback">Por favor ingresa una URL válida</div>
+                            <img th:if="${category.image != null and !category.image.isEmpty()}" 
+                                 th:src="${category.image}" 
+                                 alt="Vista previa" 
+                                 class="image-preview rounded">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="description" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="description" 
+                                      th:field="*{description}" 
+                                      rows="3"
+                                      placeholder="Descripción detallada de la categoría"></textarea>
+                        </div>
+                        
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a th:href="@{/categories}" class="btn btn-secondary me-md-2">
+                                <i class="bi bi-arrow-left"></i> Cancelar
+                            </a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Guardar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Vista previa de la imagen
+        document.getElementById('image').addEventListener('input', function(e) {
+            const preview = document.querySelector('.image-preview');
+            if (preview) {
+                preview.src = e.target.value;
+            }
+        });
+        
+        // Validación del formulario
+        (function() {
+            'use strict';
+            
+            const forms = document.querySelectorAll('.needs-validation');
+            
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
+</body>
+</html>

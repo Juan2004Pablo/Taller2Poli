@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Listado de Categorías</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .card-category {
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card-category:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .action-buttons .btn {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-4">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1><i class="bi bi-tags"></i> Categorías</h1>
+            <a href="/categories/create" class="btn btn-success">
+                <i class="bi bi-plus-circle"></i> Nueva Categoría
+            </a>
+        </div>
+
+        <div class="row">
+            <div th:each="category : ${categories}" class="col-md-4 mb-4">
+                <div class="card card-category h-100">
+                    <img th:src="${category.image}" class="card-img-top" alt="Imagen categoría" style="height: 180px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${category.categoryName}"></h5>
+                        <p class="card-text" th:text="${category.description ?: 'Sin descripción'}"></p>
+                    </div>
+                    <div class="card-footer bg-transparent action-buttons">
+                        <a th:href="@{/categories/edit/{id}(id=${category.idCategory})}" 
+                           class="btn btn-primary btn-sm">
+                            <i class="bi bi-pencil"></i> Editar
+                        </a>
+                        <button th:attr="data-id=${category.idCategory}" 
+                                class="btn btn-danger btn-sm btn-delete"
+                                data-bs-toggle="modal" data-bs-target="#deleteModal">
+                            <i class="bi bi-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div th:if="${categories.empty}" class="col-12">
+                <div class="alert alert-info">
+                    No hay categorías registradas. <a href="/categories/create">Crear una nueva categoría</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de eliminar esta categoría? Esta acción no se puede deshacer.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a id="confirmDelete" href="#" class="btn btn-danger">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Configurar modal de eliminación
+        document.querySelectorAll('.btn-delete').forEach(button => {
+            button.addEventListener('click', function() {
+                const categoryId = this.getAttribute('data-id');
+                document.getElementById('confirmDelete').href = `/categories/delete/${categoryId}`;
+            });
+        });
+    </script>
+</body>
+</html>

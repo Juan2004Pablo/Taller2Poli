@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Products List</title>
+</head>
+<body>
+    <div th:fragment="content">
+        <section>
+            <div class="d-flex justify-content-between mb-3">
+                <h2>Products</h2>
+                <a href="/products/new" class="btn btn-primary">Add New Product</a>
+            </div>
+            
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Price</th>
+                        <th>Stock</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${products}">
+                        <td th:text="${product.idProduct}"></td>
+                        <td th:text="${product.name}"></td>
+                        <td th:text="${product.category?.categoryName ?: 'No category'}"></td>
+                        <td th:text="${product.price}"></td>
+                        <td th:text="${product.stock}"></td>
+                        <td>
+                            <a th:href="@{/products/edit/{id}(id=${product.idProduct})}" 
+                               class="btn btn-sm btn-warning">Edit</a>
+                            <a th:href="@{/products/delete/{id}(id=${product.idProduct})}" 
+                               class="btn btn-sm btn-danger"
+                               onclick="return confirm('Are you sure?')">Delete</a>
+                        </td>
+                    </tr>
+                    <tr th:if="${products.empty}">
+                        <td colspan="6" class="text-center">No products found</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </div>
+</body>
+</html>

@@ -1,70 +1,67 @@
 package com.example.demo_2.Controllers;
 
 
-import com.example.demo_2.Models.Entities.Products;
-import com.example.demo_2.Models.Services.Product.IProductService;
-//import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo_2.Models.Entities.Category;
+import com.example.demo_2.Models.Entities.Product;
+import com.example.demo_2.Services.CategoryService;
+import com.example.demo_2.Services.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/products")
 public class ProductController {
-    
-    private final IProductService productService;
 
-    //@Autowired
-    public ProductController(IProductService productService) {
+    private final ProductService productService;
+    private final CategoryService categoryService;
+
+    public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
+        this.categoryService = categoryService;
     }
 
-    @GetMapping({"", "/", "/index"})
-    public String index(Model model) {
+    @GetMapping
+    public String listProducts(Model model) {
         model.addAttribute("products", productService.findAll());
-        return "Products/index";
+        return "products/list";
     }
 
-    @GetMapping("/{id}")
-    public String show(@PathVariable Long id, Model model) {
-        Products product = productService.findById(id);            
-        model.addAttribute("product", product);
-        return "Products/show";
+    @GetMapping("/new")
+    public String showCreateForm(Model model) {
+        model.addAttribute("product", new Product());
+        model.addAttribute("categories", categoryService.findAll());
+        return "products/form";
     }
 
-    @GetMapping("/create")
-    public String create(Model model) {
-        model.addAttribute("product", new Products());
-        return "Products/create";
-    }
-
-    @PostMapping("/store")
-    public String store(@ModelAttribute Products product, RedirectAttributes redirectAttributes) {
+    @PostMapping
+    public String saveProduct(@ModelAttribute Product product) {
         productService.save(product);
-        redirectAttributes.addFlashAttribute("success", "Product created successfully!");
-        return "redirect:/products/index";
+        return "redirect:/products";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(@PathVariable Long id, Model model) {
-        Products product = productService.findById(id);
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Product product = productService.findById(id);
         model.addAttribute("product", product);
-        return "Products/edit";
-    }
-
-    @PostMapping("/update/{id}")
-    public String update(@PathVariable Long id, @ModelAttribute Products product, RedirectAttributes redirectAttributes) {
-        product.setIdProduct(id);
-        productService.update(product);
-        redirectAttributes.addFlashAttribute("success", "Product updated successfully!");
-        return "redirect:/products/index";
+        model.addAttribute("categories", categoryService.findAll());
+        return "products/form";
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public String deleteProduct(@PathVariable Long id) {
         productService.delete(id);
-        redirectAttributes.addFlashAttribute("success", "Product deleted successfully!");
-        return "redirect:/products/index";
+        return "redirect:/products";
+    }
+
+    @GetMapping("/category/{id}")
+    public String listByCategory(@PathVariable Integer id, Model model) {
+        List<Product> products = productService.findByCategory(id);
+        Category category = categoryService.findById(id);
+        model.addAttribute("products", products);
+        model.addAttribute("category", category);
+        return "products/list-by-category";
     }
 }

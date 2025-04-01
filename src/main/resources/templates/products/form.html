@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: layout(~{::title}, ~{::section})}">
+<head>
+    <title th:text="${product.idProduct == null} ? 'Add Product' : 'Edit Product'"></title>
+</head>
+<body>
+    <section>
+        <h2 th:text="${product.idProduct == null} ? 'Add New Product' : 'Edit Product'"></h2>
+        
+        <form th:action="@{/products}" th:object="${product}" method="post">
+            <input type="hidden" th:field="*{idProduct}">
+            
+            <div class="mb-3">
+                <label for="name" class="form-label">Product Name</label>
+                <input type="text" class="form-control" id="name" th:field="*{name}" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="category" class="form-label">Category</label>
+                <select class="form-select" id="category" th:field="*{idCategory}" required>
+                    <option value="">Select a category</option>
+                    <option th:each="category : ${categories}" 
+                            th:value="${category.idCategory}"
+                            th:text="${category.categoryName}"></option>
+                </select>
+            </div>
+            
+            <div class="mb-3">
+                <label for="description" class="form-label">Description</label>
+                <textarea class="form-control" id="description" th:field="*{description}" rows="3"></textarea>
+            </div>
+            
+            <div class="mb-3">
+                <label for="image" class="form-label">Image URL</label>
+                <input type="text" class="form-control" id="image" th:field="*{image}" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="stock" class="form-label">Stock</label>
+                <input type="number" class="form-control" id="stock" th:field="*{stock}" required>
+            </div>
+            
+            <div class="mb-3">
+                <label for="price" class="form-label">Price</label>
+                <input type="number" class="form-control" id="price" th:field="*{price}" required>
+            </div>
+            
+            <button type="submit" class="btn btn-primary">Save</button>
+            <a href="/products" class="btn btn-secondary">Cancel</a>
+        </form>
+    </section>
+</body>
+</html>
