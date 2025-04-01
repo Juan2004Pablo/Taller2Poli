@@ -1,53 +1,157 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout/default :: layout(~{::title}, ~{::section})}">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${product.idProduct == null} ? 'Add Product' : 'Edit Product'"></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${product.idProduct == null} ? 'Nuevo Producto' : 'Editar Producto'"></title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <style>
+        .image-preview-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .image-preview {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 5px;
+        }
+    </style>
 </head>
 <body>
-    <section>
-        <h2 th:text="${product.idProduct == null} ? 'Add New Product' : 'Edit Product'"></h2>
+    <div class="container py-4">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card shadow">
+                    <div class="card-header" th:classappend="${product.idProduct == null} ? 'bg-success' : 'bg-primary'">
+                        <h2 class="mb-0 text-white">
+                            <i th:classappend="${product.idProduct == null} ? 'bi-plus-circle' : 'bi-pencil-square'"></i>
+                            <span th:text="${product.idProduct == null} ? 'Nuevo Producto' : 'Editar Producto'"></span>
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="${product.idProduct == null} ? @{/products/save} : @{/products/update/{id}(id=${product.idProduct})}" 
+                              th:object="${product}" 
+                              method="post"
+                              class="needs-validation" 
+                              novalidate>
+                              
+                            <input type="hidden" th:field="*{idProduct}">
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="name" class="form-label">Nombre *</label>
+                                    <input type="text" class="form-control" id="name" 
+                                           th:field="*{name}" required
+                                           placeholder="Nombre del producto">
+                                    <div class="invalid-feedback">Por favor ingresa un nombre válido</div>
+                                </div>
+                                
+                                <div class="col-md-6 mb-3">
+                                    <label for="category" class="form-label">Categoría *</label>
+                                    <select class="form-select" id="category" 
+                                            th:field="*{category.idCategory}" required>
+                                        <option value="">Seleccione una categoría</option>
+                                        <option th:each="cat : ${categories}" 
+                                                th:value="${cat.idCategory}"
+                                                th:text="${cat.categoryName}"></option>
+                                    </select>
+                                    <div class="invalid-feedback">Por favor selecciona una categoría</div>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Descripción</label>
+                                <textarea class="form-control" id="description" 
+                                          th:field="*{description}" 
+                                          rows="3"
+                                          placeholder="Descripción detallada del producto"></textarea>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-md-6 mb-3">
+                                    <label for="image" class="form-label">Imagen URL *</label>
+                                    <input type="url" class="form-control" id="image" 
+                                           th:field="*{image}" required
+                                           placeholder="https://ejemplo.com/imagen.jpg">
+                                    <div class="invalid-feedback">Por favor ingresa una URL válida</div>
+                                    
+                                    <div class="image-preview-container mt-2">
+                                        <img id="imagePreview" 
+                                             th:src="${product.image ?: '#'}" 
+                                             alt="Vista previa" 
+                                             class="image-preview"
+                                             th:style="${product.image != null} ? 'display: block;' : 'display: none;'">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-md-3 mb-3">
+                                    <label for="price" class="form-label">Precio *</label>
+                                    <div class="input-group">
+                                        <span class="input-group-text">$</span>
+                                        <input type="number" class="form-control" id="price" 
+                                               th:field="*{price}" 
+                                               min="0" step="0.01" required>
+                                    </div>
+                                    <div class="invalid-feedback">Por favor ingresa un precio válido</div>
+                                </div>
+                                
+                                <div class="col-md-3 mb-3">
+                                    <label for="stock" class="form-label">Stock *</label>
+                                    <input type="number" class="form-control" id="stock" 
+                                           th:field="*{stock}" 
+                                           min="0" required>
+                                    <div class="invalid-feedback">Por favor ingresa un stock válido</div>
+                                </div>
+                            </div>
+                            
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                <a th:href="@{/products}" class="btn btn-secondary me-md-2">
+                                    <i class="bi bi-arrow-left"></i> Cancelar
+                                </a>
+                                <button type="submit" class="btn" 
+                                        th:classappend="${product.idProduct == null} ? 'btn-success' : 'btn-primary'">
+                                    <i class="bi bi-save"></i>
+                                    <span th:text="${product.idProduct == null} ? 'Guardar' : 'Actualizar'"></span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Vista previa de la imagen
+        document.getElementById('image').addEventListener('input', function(e) {
+            const preview = document.getElementById('imagePreview');
+            if (e.target.value) {
+                preview.src = e.target.value;
+                preview.style.display = 'block';
+            } else {
+                preview.style.display = 'none';
+            }
+        });
         
-        <form th:action="@{/products}" th:object="${product}" method="post">
-            <input type="hidden" th:field="*{idProduct}">
+        // Validación del formulario
+        (function() {
+            'use strict';
             
-            <div class="mb-3">
-                <label for="name" class="form-label">Product Name</label>
-                <input type="text" class="form-control" id="name" th:field="*{name}" required>
-            </div>
+            const forms = document.querySelectorAll('.needs-validation');
             
-            <div class="mb-3">
-                <label for="category" class="form-label">Category</label>
-                <select class="form-select" id="category" th:field="*{idCategory}" required>
-                    <option value="">Select a category</option>
-                    <option th:each="category : ${categories}" 
-                            th:value="${category.idCategory}"
-                            th:text="${category.categoryName}"></option>
-                </select>
-            </div>
-            
-            <div class="mb-3">
-                <label for="description" class="form-label">Description</label>
-                <textarea class="form-control" id="description" th:field="*{description}" rows="3"></textarea>
-            </div>
-            
-            <div class="mb-3">
-                <label for="image" class="form-label">Image URL</label>
-                <input type="text" class="form-control" id="image" th:field="*{image}" required>
-            </div>
-            
-            <div class="mb-3">
-                <label for="stock" class="form-label">Stock</label>
-                <input type="number" class="form-control" id="stock" th:field="*{stock}" required>
-            </div>
-            
-            <div class="mb-3">
-                <label for="price" class="form-label">Price</label>
-                <input type="number" class="form-control" id="price" th:field="*{price}" required>
-            </div>
-            
-            <button type="submit" class="btn btn-primary">Save</button>
-            <a href="/products" class="btn btn-secondary">Cancel</a>
-        </form>
-    </section>
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+    </script>
 </body>
 </html>

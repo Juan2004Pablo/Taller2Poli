@@ -7,7 +7,11 @@ import com.example.demo_2.Services.CategoryService;
 import com.example.demo_2.Services.ProductService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+//import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -29,25 +33,51 @@ public class ProductController {
         return "products/list";
     }
 
-    @GetMapping("/new")
+     @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("product", new Product());
         model.addAttribute("categories", categoryService.findAll());
-        return "products/form";
+        return "products/create";
     }
 
-    @PostMapping
-    public String saveProduct(@ModelAttribute Product product) {
-        productService.save(product);
-        return "redirect:/products";
+   @PostMapping("/save")
+   public String saveProduct(
+    @ModelAttribute("product") Product product,
+    BindingResult result,
+    Model model) {
+    
+    if (result.hasErrors()) {
+        model.addAttribute("categories", categoryService.findAll());
+        return "products/create";
     }
+    
+    // Solo necesitamos el ID para la relación
+    if (product.getCategory() != null && product.getCategory().getIdCategory() != null) {
+        Category category = categoryService.findById(product.getCategory().getIdCategory());
+        product.setCategory(category);
+    }
+    
+    productService.save(product);
+    return "redirect:/products";
+}
 
     @GetMapping("/edit/{id}")
     public String showEditForm(@PathVariable Long id, Model model) {
         Product product = productService.findById(id);
         model.addAttribute("product", product);
         model.addAttribute("categories", categoryService.findAll());
-        return "products/form";
+        return "products/edit";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateProduct(@PathVariable Long id, @Valid @ModelAttribute Product product, 
+                              BindingResult result) {
+        if (result.hasErrors()) {
+            return "products/edit";
+        }
+        product.setIdProduct(id);
+        productService.save(product);
+        return "redirect:/products";
     }
 
     @GetMapping("/delete/{id}")
