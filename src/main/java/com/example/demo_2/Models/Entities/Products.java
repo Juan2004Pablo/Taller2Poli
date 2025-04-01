@@ -1,46 +1,47 @@
 package com.example.demo_2.Models.Entities;
 
 import jakarta.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name = "Products")
-public class Product {
-    
+public class Products {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idProduct") // Asegúrate que coincida con el nombre en la BD
-    private Long id;
-    
+    @Column(name = "idProduct")
+    private Long idProduct;
+
     @ManyToOne
-    @JoinColumn(name = "idCategory") // Asegúrate que coincida con el nombre en la BD
+    @JoinColumn(name = "idCategory", referencedColumnName = "idCategory")
     private Category category;
-    
-    @Column(name = "Name")
+
+    @Column(name = "Name", nullable = false)
     private String name;
-    
+
     @Column(name = "Description")
     private String description;
-    
-    @Column(name = "Image")
-    private String image;
-    
-    @Column(name = "Stock")
-    private Integer stock;
-    
-    @Column(name = "Price")
-    private BigDecimal price;
-    
-    @Column(name = "Created_at")
-    private LocalDateTime createdAt;
 
-    public Long getId() {
-        return id;
+    @Column(name = "Image", nullable = false)
+    private String image;
+
+    @Column(name = "Stock", nullable = false)
+    private Integer stock;
+
+    @Column(name = "Price", nullable = false)
+    private Long price;
+
+    @Column(name = "Created_at")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    // Getters y Setters
+    public Long getIdProduct() {
+        return idProduct;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setIdProduct(Long idProduct) {
+        this.idProduct = idProduct;
     }
 
     public Category getCategory() {
@@ -83,21 +84,19 @@ public class Product {
         this.stock = stock;
     }
 
-    public BigDecimal getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(BigDecimal price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
-    public LocalDateTime getCreatedAt() {
+    public Date getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
-    
-    
 }

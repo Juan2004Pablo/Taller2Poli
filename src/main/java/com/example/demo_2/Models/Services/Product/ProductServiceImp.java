@@ -1,7 +1,7 @@
 package com.example.demo_2.Models.Services.Product;
 
 import com.example.demo_2.Models.DAO.Product.IProductDao;
-import com.example.demo_2.Models.Entities.Product;
+import com.example.demo_2.Models.Entities.Products;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,26 +19,26 @@ public class ProductServiceImp implements IProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findAll() {
+    public List<Products> findAll() {
         return productDao.findAll();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Product findById(Long id) {
+    public Products findById(Long id) {
         return productDao.findById(id);  // Ahora retorna un Product directamente
     }
     
 
     @Override
     @Transactional
-    public void save(Product product) {
+    public void save(Products product) {
         productDao.save(product);
     }
 
     @Override
     @Transactional
-    public void update(Product product) {
+    public void update(Products product) {
         productDao.update(product);
     }
 
@@ -50,7 +50,7 @@ public class ProductServiceImp implements IProductService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Product> findByName(String name) {
+    public List<Products> findByName(String name) {
         return productDao.findByName(name);
     }
 }

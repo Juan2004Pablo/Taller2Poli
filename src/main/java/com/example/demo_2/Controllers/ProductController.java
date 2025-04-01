@@ -1,6 +1,7 @@
 package com.example.demo_2.Controllers;
 
-import com.example.demo_2.Models.Entities.Product;
+
+import com.example.demo_2.Models.Entities.Products;
 import com.example.demo_2.Models.Services.Product.IProductService;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,19 +28,19 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public String show(@PathVariable Long id, Model model) {
-        Product product = productService.findById(id);            
+        Products product = productService.findById(id);            
         model.addAttribute("product", product);
         return "Products/show";
     }
 
     @GetMapping("/create")
     public String create(Model model) {
-        model.addAttribute("product", new Product());
+        model.addAttribute("product", new Products());
         return "Products/create";
     }
 
     @PostMapping("/store")
-    public String store(@ModelAttribute Product product, RedirectAttributes redirectAttributes) {
+    public String store(@ModelAttribute Products product, RedirectAttributes redirectAttributes) {
         productService.save(product);
         redirectAttributes.addFlashAttribute("success", "Product created successfully!");
         return "redirect:/products/index";
@@ -47,14 +48,14 @@ public class ProductController {
 
     @GetMapping("/edit/{id}")
     public String edit(@PathVariable Long id, Model model) {
-        Product product = productService.findById(id);
+        Products product = productService.findById(id);
         model.addAttribute("product", product);
         return "Products/edit";
     }
 
     @PostMapping("/update/{id}")
-    public String update(@PathVariable Long id, @ModelAttribute Product product, RedirectAttributes redirectAttributes) {
-        product.setId(id);
+    public String update(@PathVariable Long id, @ModelAttribute Products product, RedirectAttributes redirectAttributes) {
+        product.setIdProduct(id);
         productService.update(product);
         redirectAttributes.addFlashAttribute("success", "Product updated successfully!");
         return "redirect:/products/index";

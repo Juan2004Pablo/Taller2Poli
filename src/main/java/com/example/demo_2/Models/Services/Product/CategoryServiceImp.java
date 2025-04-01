@@ -33,7 +33,7 @@ public class CategoryServiceImp implements ICategoryService {
     @Override
     @Transactional
     public void save(Category category) {
-        if (categoryDao.existsByName(category.getName())) {
+        if (categoryDao.existsByName(category.getCategory())) {
             throw new RuntimeException("Ya existe una categoría con ese nombre");
         }
         categoryDao.save(category);

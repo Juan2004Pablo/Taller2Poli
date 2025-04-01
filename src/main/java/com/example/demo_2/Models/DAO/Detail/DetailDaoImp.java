@@ -1,18 +1,18 @@
 package com.example.demo_2.Models.DAO.Detail;
 
-import com.example.demo_2.Models.Entities.Detail;
-import com.example.demo_2.Models.Entities.DetailProduct;
-import com.example.demo_2.Models.Entities.Product;
+import com.example.demo_2.Models.Entities.Details;
+import com.example.demo_2.Models.Entities.DetailsProducts;
+import com.example.demo_2.Models.Entities.Products;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.TypedQuery;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
-@Component
+@Repository
+@Transactional
 public class DetailDaoImp implements IDetailDao {
 
     @PersistenceContext
@@ -20,22 +20,19 @@ public class DetailDaoImp implements IDetailDao {
 
     @Override
     @Transactional(readOnly = true)
-    public List<Detail> findAll() {
-        TypedQuery<Detail> query = em.createQuery("SELECT d FROM Detail d", Detail.class);
-        return query.getResultList();
+    public List<Details> findAll() {
+        return em.createQuery("SELECT d FROM Details d", Details.class).getResultList();
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Detail> findById(Long id) {
-        Detail detail = em.find(Detail.class, id);
-        return Optional.ofNullable(detail);
+    public Details findById(Long id) {
+        return em.find(Details.class, id);
     }
 
     @Override
-    @Transactional
-    public Detail save(Detail detail) {
-        if (detail.getId() == null) {
+    public Details save(Details detail) {
+        if (detail.getIdDetail() == null) {
             em.persist(detail);
             return detail;
         }
@@ -43,56 +40,77 @@ public class DetailDaoImp implements IDetailDao {
     }
 
     @Override
-    @Transactional
     public void deleteById(Long id) {
-        findById(id).ifPresent(detail -> {
-            // Eliminar primero los DetailProduct asociados
-            em.createQuery("DELETE FROM DetailProduct dp WHERE dp.detail.id = :detailId")
+        Details detail = findById(id);
+        if (detail != null) {
+            // Eliminar primero los DetailsProduct asociados
+            em.createQuery("DELETE FROM DetailsProducts dp WHERE dp.details.idDetail = :detailId")
               .setParameter("detailId", id)
               .executeUpdate();
             
             // Luego eliminar el Detail
             em.remove(detail);
-        });
+        }
     }
 
     @Override
-    @Transactional
-    public Detail update(Detail detail) {
+    public Details update(Details detail) {
         return em.merge(detail);
     }
 
     @Override
-    @Transactional
-    public void addProductToDetail(Long detailId, Product product, int quantity) {
-        Detail detail = em.find(Detail.class, detailId);
+    public void addProductToDetail(Long detailId, Products product, int quantity) {
+        if (quantity <= 0) {
+            throw new IllegalArgumentException("La cantidad debe ser positiva");
+        }
+
+        Details detail = em.find(Details.class, detailId);
         if (detail == null) {
-            throw new IllegalArgumentException("Detail not found with id: " + detailId);
+            throw new IllegalArgumentException("Detalle no encontrado con id: " + detailId);
         }
 
-        Product managedProduct = em.find(Product.class, product.getId());
+        Products managedProduct = em.find(Products.class, product.getIdProduct());
         if (managedProduct == null) {
-            throw new IllegalArgumentException("Product not found with id: " + product.getId());
+            throw new IllegalArgumentException("Producto no encontrado");
         }
 
-        // Buscar si ya existe la relación
-        TypedQuery<DetailProduct> query = em.createQuery(
-            "SELECT dp FROM DetailProduct dp WHERE dp.detail.id = :detailId AND dp.product.id = :productId", 
-            DetailProduct.class);
+        if (managedProduct.getStock() < quantity) {
+            throw new IllegalStateException("Stock insuficiente");
+        }
+
+        // Buscar relación existente
+        TypedQuery<DetailsProducts> query = em.createQuery(
+            "SELECT dp FROM DetailsProducts dp WHERE dp.details.idDetail = :detailId AND dp.products.idProduct = :productId", 
+            DetailsProducts.class);
         query.setParameter("detailId", detailId);
-        query.setParameter("productId", managedProduct.getId());
+        query.setParameter("productId", managedProduct.getIdProduct());
         
-        List<DetailProduct> results = query.getResultList();
+        List<DetailsProducts> results = query.getResultList();
         
         if (!results.isEmpty()) {
-            // Actualizar cantidad si ya existe
-            DetailProduct existing = results.get(0);
+            // Actualizar cantidad existente
+            DetailsProducts existing = results.get(0);
             existing.setQuantity(existing.getQuantity() + quantity);
-            em.merge(existing);
         } else {
             // Crear nueva relación
-            DetailProduct newDetailProduct = new DetailProduct(detail, managedProduct, quantity);
+            DetailsProducts newDetailProduct = new DetailsProducts();
+            newDetailProduct.setDetails(detail);
+            newDetailProduct.setProduct(managedProduct);
+            newDetailProduct.setQuantity(quantity);
             em.persist(newDetailProduct);
         }
+
+        // Actualizar stock
+        managedProduct.setStock(managedProduct.getStock() - quantity);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<DetailsProducts> findProductsByDetailId(Long detailId) {
+        return em.createQuery(
+            "SELECT dp FROM DetailsProducts dp WHERE dp.details.idDetail = :detailId", 
+            DetailsProducts.class)
+            .setParameter("detailId", detailId)
+            .getResultList();
     }
 }

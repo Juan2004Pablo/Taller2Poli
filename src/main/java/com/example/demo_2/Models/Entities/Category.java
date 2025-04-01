@@ -1,43 +1,40 @@
 package com.example.demo_2.Models.Entities;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
 @Table(name = "Category")
 public class Category {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "idCategory") // Asegúrate que coincida con el nombre en la BD
-    private Integer id;
-    
-    @Column(name = "Category")
-    private String name;
-    
-    @Column(name = "Image")
+    @Column(name = "idCategory") // Exactamente como en la BD
+    private Integer idCategory;
+
+    @Column(name = "Category", nullable = false)
+    private String category;
+
+    @Column(name = "Image", nullable = false)
     private String image;
-    
+
     @Column(name = "Description")
     private String description;
-    
-    @OneToMany(mappedBy = "category")
-    private List<Product> products;
 
-    public Integer getId() {
-        return id;
+    // Getters y Setters
+    public Integer getIdCategory() {
+        return idCategory;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
+    public void setIdCategory(Integer idCategory) {
+        this.idCategory = idCategory;
     }
 
-    public String getName() {
-        return name;
+    public String getCategory() {
+        return category;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public String getImage() {
@@ -55,15 +52,4 @@ public class Category {
     public void setDescription(String description) {
         this.description = description;
     }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-    
-    
-    
 }

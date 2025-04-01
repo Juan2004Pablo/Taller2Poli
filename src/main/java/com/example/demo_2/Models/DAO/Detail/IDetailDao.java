@@ -1,32 +1,23 @@
 package com.example.demo_2.Models.DAO.Detail;
 
-import com.example.demo_2.Models.Entities.Detail;
-import com.example.demo_2.Models.Entities.Product;
+import com.example.demo_2.Models.Entities.Details;
+import com.example.demo_2.Models.Entities.DetailsProducts;
+import com.example.demo_2.Models.Entities.Products;
 import java.util.List;
-import java.util.Optional;
 
 public interface IDetailDao {
     
-    // Obtener todos los detalles
-    List<Detail> findAll();
+    List<Details> findAll();
     
-    // Buscar detalle por ID (debería devolver Optional)
-    Optional<Detail> findById(Long id);
+    Details findById(Long id);
     
-    // Guardar un nuevo detalle (debería devolver el detalle guardado)
-    Detail save(Detail detail);
+    Details save(Details detail);
     
-    // Eliminar detalle por ID
     void deleteById(Long id);
     
-    // Actualizar detalle existente
-    Detail update(Detail detail);
+    Details update(Details detail);
     
-    // Añadir producto a un detalle (versión mejorada)
-    void addProductToDetail(Long detailId, Product product, int quantity);
+    void addProductToDetail(Long detailId, Products product, int quantity);
     
-    // Versión alternativa con Optional
-    default void addProductToDetail(Long detailId, Optional<Product> productOptional, int quantity) {
-        productOptional.ifPresent(product -> addProductToDetail(detailId, product, quantity));
-    }
+    List<DetailsProducts> findProductsByDetailId(Long detailId);
 }
