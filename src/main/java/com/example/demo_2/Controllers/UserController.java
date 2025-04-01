@@ -31,7 +31,6 @@ public class UserController {
 
     @PostMapping
     public String saveUser(@ModelAttribute User user) {
-        // No need to set createdAt manually - it will be set automatically by @PrePersist
         userService.save(user);
         return "redirect:/Users";
     }

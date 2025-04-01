@@ -29,7 +29,7 @@ public class CategoryController {
         return "categories/create";
     }
 
-    // Procesa el envío del formulario (CAMBIADO)
+  
     @PostMapping("/save")
     public String saveCategory(@ModelAttribute("category") Category category) {
         categoryService.save(category);
@@ -53,6 +53,8 @@ public class CategoryController {
          categoryService.save(category);
          return "redirect:/categories";
      }
+
+     
     @GetMapping("/delete/{id}")
     public String deleteCategory(@PathVariable Integer id) {
         categoryService.delete(id);
