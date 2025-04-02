@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/Users")
+@RequestMapping("/users")
 public class UserController {
 
     private final UserService userService;
@@ -32,7 +32,7 @@ public class UserController {
     @PostMapping
     public String saveUser(@ModelAttribute User user) {
         userService.save(user);
-        return "redirect:/Users";
+        return "redirect:/users";
     }
 
     @GetMapping("/edit/{id}")
@@ -44,6 +44,6 @@ public class UserController {
     @GetMapping("/delete/{id}")
     public String deleteUser(@PathVariable Long id) {
         userService.delete(id);
-        return "redirect:/Users";
+        return "redirect:/users";
     }
 }

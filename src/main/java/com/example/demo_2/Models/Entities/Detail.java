@@ -3,6 +3,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -27,8 +28,8 @@ public class Detail {
     @JoinColumn(name = "Identification", insertable = false, updatable = false)
     private User user;
 
-    @OneToMany(mappedBy = "detail")
-    private List<DetailsProduct> detailsProducts;
+    @OneToMany(mappedBy = "detail", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<DetailsProduct> detailsProducts = new ArrayList<>();
 
     @OneToOne(mappedBy = "detail")
     private Order order;

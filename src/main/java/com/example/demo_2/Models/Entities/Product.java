@@ -3,6 +3,7 @@ package com.example.demo_2.Models.Entities;
 import jakarta.persistence.*;
 import lombok.Data;
 import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -33,7 +34,13 @@ public class Product {
     private Long price;
 
     @Column(name = "Created_at")
-    private LocalDateTime createdAt;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date();
+    }
 
     @ManyToOne
     @JoinColumn(name = "idCategory", insertable = false, updatable = false)
