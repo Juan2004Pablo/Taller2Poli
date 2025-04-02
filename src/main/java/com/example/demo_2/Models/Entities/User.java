@@ -1,101 +1,81 @@
 package com.example.demo_2.Models.Entities;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Date;
+import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
-import jakarta.persistence.*;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.Table;
+import lombok.Data;
+
+@Data
 @Entity
-@Table(name = "users")
-public class User implements Serializable {
-
+@Table(name = "Users")
+public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Column(name = "Identification")
+    private Long identification;
+    
+    @Column(name = "Name", nullable = false)
     private String name;
+    
+    @Column(name = "Address", nullable = false)
     private String address;
+    
+    @Column(name = "Phone", nullable = false)
     private String phone;
-
-    @Column(unique = true, length = 250)
+    
+    @Column(name = "Email", nullable = false)
     private String email;
     
+    @Column(name = "Password")
     private String password;
-
-    @Column(name = "created_at")
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
-
-    // Un usuario puede tener muchos detalles (carritos)
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Detail> details = new ArrayList<>();
+    
+    @Column(name = "Role", nullable = false)
+    private String role;
+    
+    @Column(name = "Created_at", nullable = false)
+    private LocalDateTime createdAt;
 
     @PrePersist
     protected void onCreate() {
-        this.createdAt = new Date();
+        createdAt = LocalDateTime.now();
     }
 
-    public User() {
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(role));
     }
 
-    public User(Long id, String name, String address, String phone, String email, String password) {
-        this.id = id;
-        this.name = name;
-        this.address = address;
-        this.phone = phone;
-        this.email = email;
-        this.password = password;
-    }
-
-    // Getters & Setters
-
-    public Long getId() {
-        return id;
-    }
-    public void setId(Long id) {
-        this.id = id;
-    }
-    public String getName() {
-        return name;
-    }
-    public void setName(String name) {
-        this.name = name;
-    }
-    public String getAddress() {
-        return address;
-    }
-    public void setAddress(String address) {
-        this.address = address;
-    }
-    public String getPhone() {
-        return phone;
-    }
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-    public String getEmail() {
+    @Override
+    public String getUsername() {
         return email;
     }
-    public void setEmail(String email) {
-        this.email = email;
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
     }
-    public String getPassword() {
-        return password;
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
     }
-    public void setPassword(String password) {
-        this.password = password;
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
     }
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-    public void setCreatedAt(Date createdAt) {
-        this.createdAt = createdAt;
-    }
-    public List<Detail> getDetails() {
-        return details;
-    }
-    public void setDetails(List<Detail> details) {
-        this.details = details;
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 }
