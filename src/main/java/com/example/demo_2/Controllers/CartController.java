@@ -22,11 +22,15 @@ public class CartController {
     @GetMapping
     public String showCart(Model model) {
         // Falta consultar el detalle con estado activo del usuario
+        Long cartId = cartService.getLatestActiveDetailId();
+        Detail cart = cartService.getCartDetailById(cartId);
+        Long productCount = cartService.countProductsInDetail(cart.getIdDetail());
 
-        Detail cartDetail = cartService.getCartDetailById(7L);
-        Long totalAmount = cartService.getTotalAmount(cartDetail.getIdDetail());
-        model.addAttribute("cartDetail", cartDetail);
+        Long totalAmount = cartService.getTotalAmount(cart.getIdDetail());
+        model.addAttribute("cartDetail", cart);
         model.addAttribute("totalAmount", totalAmount);
+        model.addAttribute("productCount", productCount);
+
         return "ShoppingCart/index";
     }
 
@@ -38,7 +42,9 @@ public class CartController {
             return "redirect:/shopping-cart?error=ProductNotFound";
         }
         // Buscar o crear el detail (carrito) usando el repositorio
-        Detail detail = cartService.show(7L);
+        Long cartId = cartService.getLatestActiveDetailId();
+        Detail detail = cartService.getCartDetailById(cartId);
+
         if (detail == null) {
             detail = new Detail();
             // Asignar datos necesarios (p.ej. usuario, fecha, estado)
@@ -51,11 +57,16 @@ public class CartController {
 
     @PostMapping("/remove/{id}")
     public String removeFromCart(@PathVariable Long id) {
-        Long detailId = 7L; // Aquí debes obtener el detalle activo del usuario, si no siempre será 7
-        cartService.removeFromCart(detailId, id);
+        Long cartId = cartService.getLatestActiveDetailId();
+        Detail latestDetail = cartService.getCartDetailById(cartId);
+    
+        if (latestDetail == null) {
+            throw new RuntimeException("No se encontró un detalle activo");
+        }
+
+        cartService.removeProductFromDetail(id, latestDetail.getIdDetail());
         return "redirect:/shopping-cart";
     }
-    
 
     @PostMapping("/clear")
     public String clearCart() {

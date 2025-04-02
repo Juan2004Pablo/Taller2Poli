@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-white">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <title>Shopping cart</title>
 </head>
+
 <body class="h-full">
     <div class="min-h-full">
         <nav class="bg-gray-800">
@@ -30,6 +32,17 @@
                     </div>
                     <div class="hidden md:block">
                         <div class="ml-4 flex items-center md:ml-6">
+                            <!--<button type="button"
+                                class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
+                                onclick="window.location.href='/shopping-cart'">
+                                <span class="absolute -inset-1.5"></span>
+                                <span class="sr-only">Shopping cart</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="size-6">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                </svg>
+                            </button>-->
                             <button type="button"
                                 class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
                                 onclick="window.location.href='/shopping-cart'">
@@ -40,6 +53,9 @@
                                     <path stroke-linecap="round" stroke-linejoin="round"
                                         d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                 </svg>
+                                <span id="cart-count" th:text="${productCount}"
+                                    class="absolute top-0 right-0 -mt-1.5 -mr-1.5 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                                </span>
                             </button>
 
                             <!-- Profile dropdown -->
@@ -77,7 +93,8 @@
                         <div class="relative">
                             <a th:href="@{/home/show/{id}(id=${product.idProduct})}">
                                 <div class="relative h-72 w-full overflow-hidden rounded-lg">
-                                    <img th:src="${product.image}" alt="Product Image" class="w-full h-full object-cover">
+                                    <img th:src="${product.image}" alt="Product Image"
+                                        class="w-full h-full object-cover">
                                 </div>
                             </a>
                             <div class="relative mt-4">
@@ -97,19 +114,20 @@
                                 <div aria-hidden="true"
                                     class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50">
                                 </div>
-                                <a th:href="@{/home/show/{id}(id=${product.idProduct})}" class="relative text-white text-xl">
+                                <a th:href="@{/home/show/{id}(id=${product.idProduct})}"
+                                    class="relative text-white text-xl">
                                     <i class="ph ph-eye"></i>
                                 </a>
                             </div>
                         </div>
                         <form th:action="@{/shopping-cart/add/{id}(id=${product.idProduct})}" method="post"
-                              class="flex items-center space-x-3">
+                            class="flex items-center space-x-3">
                             <label for="quantity" class="text-sm font-medium text-gray-700">Cantidad:</label>
                             <input type="number" id="quantity" name="quantity" min="1" th:attr="max=${product.stock}"
-                                   value="1" required
-                                   class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+                                value="1" required
+                                class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
                             <button type="submit"
-                                    class="add-to-bag inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-700 whitespace-nowrap">
+                                class="add-to-bag inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-700 whitespace-nowrap">
                                 <i class="ph ph-shopping-cart text-lg"></i>
                                 <span>Buy now</span>
                             </button>
@@ -138,4 +156,5 @@
         });
     </script>
 </body>
+
 </html>

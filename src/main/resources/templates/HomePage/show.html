@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="h-full bg-white">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <title>Show Product</title>
 </head>
+
 <body>
     <div class="bg-white">
         <div class="min-h-full">
@@ -40,6 +42,9 @@
                                         <path stroke-linecap="round" stroke-linejoin="round"
                                             d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                                     </svg>
+                                    <span id="cart-count" th:text="${productCount}"
+                                        class="absolute top-0 right-0 -mt-1.5 -mr-1.5 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
+                                    </span>
                                 </button>
 
                                 <!-- Profile dropdown -->
@@ -79,9 +84,11 @@
                                         aria-controls="tabs-2-panel-1" role="tab" type="button">
                                         <span class="sr-only">Angled view</span>
                                         <span class="absolute inset-0 overflow-hidden rounded-md">
-                                            <img th:src="${product.image}" alt="image example" class="w-full h-full object-cover">
+                                            <img th:src="${product.image}" alt="image example"
+                                                class="w-full h-full object-cover">
                                         </span>
-                                        <span class="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2"
+                                        <span
+                                            class="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2"
                                             aria-hidden="true"></span>
                                     </button>
                                     <!-- Más imágenes... -->
@@ -123,33 +130,33 @@
                                 <div class="flex items-center">
                                     <div class="flex items-center">
                                         <!-- Se muestran estrellas (se puede ajustar la cantidad) -->
-                                        <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20" fill="currentColor"
-                                            aria-hidden="true">
+                                        <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
                                             <path fill-rule="evenodd"
                                                 d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
                                                 clip-rule="evenodd" />
                                         </svg>
                                         <!-- Se repite para 5 estrellas -->
-                                        <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20" fill="currentColor"
-                                            aria-hidden="true">
+                                        <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
                                             <path fill-rule="evenodd"
                                                 d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
                                                 clip-rule="evenodd" />
                                         </svg>
-                                        <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20" fill="currentColor"
-                                            aria-hidden="true">
+                                        <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
                                             <path fill-rule="evenodd"
                                                 d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
                                                 clip-rule="evenodd" />
                                         </svg>
-                                        <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20" fill="currentColor"
-                                            aria-hidden="true">
+                                        <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
                                             <path fill-rule="evenodd"
                                                 d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
                                                 clip-rule="evenodd" />
                                         </svg>
-                                        <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20" fill="currentColor"
-                                            aria-hidden="true">
+                                        <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20"
+                                            fill="currentColor" aria-hidden="true">
                                             <path fill-rule="evenodd"
                                                 d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
                                                 clip-rule="evenodd" />
@@ -190,34 +197,49 @@
                                     </div>
                                 </form>
                                 <section aria-labelledby="features-heading" class="mt-12">
-                                    <h2 id="features-heading" class="text-xl font-bold text-gray-900">Características y Beneficios</h2>
+                                    <h2 id="features-heading" class="text-xl font-bold text-gray-900">Características y
+                                        Beneficios</h2>
                                     <div class="mt-4">
                                         <p class="text-base text-gray-700 mb-4">
-                                            Descubre un producto diseñado para superar tus expectativas. Con materiales de alta calidad y un diseño innovador, garantizamos un rendimiento superior que se adapta a tu estilo de vida.
+                                            Descubre un producto diseñado para superar tus expectativas. Con materiales
+                                            de alta calidad y un diseño innovador, garantizamos un rendimiento superior
+                                            que se adapta a tu estilo de vida.
                                         </p>
                                         <ul class="list-disc space-y-2 pl-5 text-base text-gray-700">
-                                            <li class="font-medium">Diseño y calidad premium: Innovación y estándares altos en cada detalle.</li>
-                                            <li class="font-medium">Garantía integral: Tu inversión está protegida con respaldo total.</li>
-                                            <li class="font-medium">Devoluciones sin complicaciones: Un proceso rápido y sin riesgos si no quedas 100% satisfecho.</li>
-                                            <li class="font-medium">Atención personalizada: Asesoría experta a tu disposición en todo momento.</li>
+                                            <li class="font-medium">Diseño y calidad premium: Innovación y estándares
+                                                altos en cada detalle.</li>
+                                            <li class="font-medium">Garantía integral: Tu inversión está protegida con
+                                                respaldo total.</li>
+                                            <li class="font-medium">Devoluciones sin complicaciones: Un proceso rápido y
+                                                sin riesgos si no quedas 100% satisfecho.</li>
+                                            <li class="font-medium">Atención personalizada: Asesoría experta a tu
+                                                disposición en todo momento.</li>
                                         </ul>
                                     </div>
                                 </section>
 
                                 <section aria-labelledby="warranty-heading" class="mt-12">
-                                    <h2 id="warranty-heading" class="text-xl font-bold text-gray-900">Garantía y Devoluciones</h2>
+                                    <h2 id="warranty-heading" class="text-xl font-bold text-gray-900">Garantía y
+                                        Devoluciones</h2>
                                     <div class="mt-4">
                                         <p class="text-base text-gray-700">
-                                            Estamos comprometidos con tu satisfacción. Todos nuestros productos cuentan con una garantía de 12 meses que respalda su durabilidad y calidad. Además, si por cualquier motivo el producto no cumple con tus expectativas, nuestro proceso de devolución es ágil y sin complicaciones.
+                                            Estamos comprometidos con tu satisfacción. Todos nuestros productos cuentan
+                                            con una garantía de 12 meses que respalda su durabilidad y calidad. Además,
+                                            si por cualquier motivo el producto no cumple con tus expectativas, nuestro
+                                            proceso de devolución es ágil y sin complicaciones.
                                         </p>
                                     </div>
                                 </section>
 
                                 <section aria-labelledby="customer-service-heading" class="mt-12">
-                                    <h2 id="customer-service-heading" class="text-xl font-bold text-gray-900">Atención al Cliente</h2>
+                                    <h2 id="customer-service-heading" class="text-xl font-bold text-gray-900">Atención
+                                        al Cliente</h2>
                                     <div class="mt-4">
                                         <p class="text-base text-gray-700">
-                                            Nuestro compromiso va más allá de la venta. Contamos con un equipo de atención al cliente disponible las 24 horas, listo para asesorarte y resolver cualquier inquietud. Porque para nosotros, tu experiencia es lo primero.
+                                            Nuestro compromiso va más allá de la venta. Contamos con un equipo de
+                                            atención al cliente disponible las 24 horas, listo para asesorarte y
+                                            resolver cualquier inquietud. Porque para nosotros, tu experiencia es lo
+                                            primero.
                                         </p>
                                     </div>
                                 </section>
@@ -273,4 +295,5 @@
         });
     </script>
 </body>
+
 </html>

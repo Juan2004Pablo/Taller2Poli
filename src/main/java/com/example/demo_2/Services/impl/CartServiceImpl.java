@@ -113,22 +113,16 @@ public class CartServiceImpl implements DetailService {
         cartDetails.add(newDetail);
     }
 
-    public void removeFromCart(Long productId) {
-        // Se recorre cada detalle y se elimina o se disminuye la cantidad del producto indicado
-        cartDetails.removeIf(detail -> {
-            if (detail.getDetailsProducts() != null) {
-                for (DetailsProduct dp : detail.getDetailsProducts()) {
-                    if (dp.getProduct().getIdProduct().equals(productId)) {
-                        if (dp.getQuantity() > 1) {
-                            dp.setQuantity(dp.getQuantity() - 1);
-                            return false;
-                        }
-                        return true;
-                    }
-                }
-            }
-            return false;
-        });
+    @Transactional
+    public void removeProductFromDetail(Long productId, Long detailId) {
+        DetailsProduct detailsProduct = detailsProductRepository.findByProduct_IdProductAndDetail_IdDetail(productId, detailId)
+                .orElseThrow(() -> new RuntimeException("Producto no encontrado en el detalle"));
+    
+        // Eliminar de la lista de la entidad padre
+        detailsProduct.getDetail().getDetailsProducts().remove(detailsProduct);
+    
+        // Eliminar de la base de datos
+        detailsProductRepository.delete(detailsProduct);
     }
 
     public void clearCart() {
@@ -184,15 +178,21 @@ public class CartServiceImpl implements DetailService {
                 .sum();
     }
 
-    // Método auxiliar para obtener la cantidad de un producto en el detail
-    private int getQuantityForProduct(Detail detail, Product product) {
-        if (detail.getDetailsProducts() != null) {
-            return detail.getDetailsProducts().stream()
-                .filter(dp -> dp.getProduct().getIdProduct().equals(product.getIdProduct()))
-                .mapToInt(DetailsProduct::getQuantity)
-                .findFirst()
-                .orElse(0);
-        }
-        return 0;
+    @Transactional(readOnly = true)
+    public Long getLatestActiveDetailId() {
+        return detailRepository.findLatestActiveDetail()
+                .map(Detail::getIdDetail)
+                .orElse(null); // Devuelve null si no hay detalles activos
+    }
+
+    @Transactional
+    public Long countProductsInDetail(Long detailId) {
+        return detailsProductRepository.countProductsInDetail(detailId);
+    }
+
+    @Override
+    public void removeFromCart(Long productId) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'removeFromCart'");
     }
 }

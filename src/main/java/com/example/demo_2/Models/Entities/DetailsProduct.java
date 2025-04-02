@@ -11,20 +11,14 @@ public class DetailsProduct {
     @Column(name = "idDetailsProducts")
     private Integer idDetailsProducts;
 
-    @Column(name = "idDetail")
-    private Long idDetail;
-
-    @Column(name = "idProduct")
-    private Long idProduct;
-
-    @Column(name = "Quantity", nullable = false)
-    private Integer quantity;
-
     @ManyToOne
-    @JoinColumn(name = "idDetail", insertable = false, updatable = false)
+    @JoinColumn(name = "idDetail", nullable = false)
     private Detail detail;
 
     @ManyToOne
-    @JoinColumn(name = "idProduct", insertable = false, updatable = false)
+    @JoinColumn(name = "idProduct", nullable = false)
     private Product product;
+
+    @Column(name = "Quantity", nullable = false)
+    private Integer quantity;
 }

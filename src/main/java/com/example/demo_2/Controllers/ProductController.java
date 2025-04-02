@@ -2,9 +2,13 @@ package com.example.demo_2.Controllers;
 
 
 import com.example.demo_2.Models.Entities.Category;
+import com.example.demo_2.Models.Entities.Detail;
 import com.example.demo_2.Models.Entities.Product;
 import com.example.demo_2.Services.CategoryService;
+import com.example.demo_2.Services.DetailService;
 import com.example.demo_2.Services.ProductService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -22,6 +26,9 @@ public class ProductController {
     private final ProductService productService;
     private final CategoryService categoryService;
 
+    @Autowired
+    private DetailService cartService;
+
     public ProductController(ProductService productService, CategoryService categoryService) {
         this.productService = productService;
         this.categoryService = categoryService;
@@ -29,7 +36,12 @@ public class ProductController {
 
     @GetMapping
     public String listProducts(Model model) {
+        Long cartId = cartService.getLatestActiveDetailId();
+        Detail cart = cartService.getCartDetailById(cartId);
+        Long productCount = cartService.countProductsInDetail(cart.getIdDetail());
+
         model.addAttribute("products", productService.findAll());
+        model.addAttribute("productCount", productCount);
         return "products/list";
     }
 

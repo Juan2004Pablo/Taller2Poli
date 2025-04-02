@@ -14,7 +14,10 @@ public interface DetailService {
     Detail getCartDetailById(Long detailId);
     void addProductToCart(Long detailId, Long productId, int quantity);
     void addToCart(Product product);
+    void removeProductFromDetail(Long productId, Long detailId);
     void removeFromCart(Long productId);
     void clearCart();
     Long getTotalAmount(Long detailId);
+    Long getLatestActiveDetailId();
+    Long countProductsInDetail(Long detailId);
 }
