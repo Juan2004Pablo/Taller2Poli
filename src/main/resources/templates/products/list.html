@@ -98,6 +98,10 @@
                                         <i class="ph ph-box"></i> Name
                                     </th>
                                     <th class="border border-gray-300 px-4 py-2 text-left">
+                                        <i class="ph ph-tag"></i> Images
+                                    </th>
+                                    </th>
+                                    <th class="border border-gray-300 px-4 py-2 text-left">
                                         <i class="ph ph-tag"></i> Price
                                     </th>
                                     <th class="border border-gray-300 px-4 py-2 text-left">
@@ -115,6 +119,9 @@
                                 <tr th:each="product : ${products}" class="hog-gray-100">
                                     <td class="p-3" th:text="${product.idProduct}"></td>
                                     <td class="p-3" th:text="${product.name}"></td>
+                                    <td class="p-3">
+                                        <img th:src="${product.image}" alt="Product image" style="max-width: 100px; max-height: 100px;">
+                                    </td>
                                     <td class="p-3" th:text="${product.price}"></td>
                                     <td class="p-3" th:text="${product.stock}" th:classappend="${product.stock == 0} ? 'text-danger' : ''"></td>
                                     <td class="p-3" th:text="${#dates.format(product.createdAt, 'dd/MM/yyyy')}"></td>
