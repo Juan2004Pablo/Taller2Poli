@@ -26,6 +26,8 @@
                                     aria-current="page">Home</a>
                                 <a href="/clients/list"
                                     class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Clients</a>
+                                <a href="/categories"
+                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Categories</a>
                                 <a href="/products/index"
                                     class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white">Products</a>
                             </div>
@@ -123,7 +125,8 @@
                                     <td class="p-3" th:text="${product.idProduct}"></td>
                                     <td class="p-3" th:text="${product.name}"></td>
                                     <td class="p-3">
-                                        <img th:src="${product.image}" alt="Product image" style="max-width: 100px; max-height: 100px;">
+                                        <img th:src="${product.image}" alt="Product image"
+                                            style="max-width: 100px; max-height: 100px;">
                                     </td>
                                     <td class="p-3" th:text="${product.price}"></td>
                                     <td class="p-3" th:text="${product.stock}"

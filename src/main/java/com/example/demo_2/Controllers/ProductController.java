@@ -45,6 +45,12 @@ public class ProductController {
         return "products/list";
     }
 
+    @GetMapping("/{id}")
+    public String show(@PathVariable Long id, Model model){
+        model.addAttribute("product", productService.findById(id));
+        return "Products/show";
+    }
+
      @GetMapping("/create")
     public String showCreateForm(Model model) {
         model.addAttribute("product", new Product());
