@@ -25,8 +25,6 @@
                                     class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Categories</a>
                                 <a href="/products"
                                     class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Products</a>
-                                <a href="/pays"
-                                    class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Pays</a>
                             </div>
                         </div>
                     </div>
@@ -125,7 +123,8 @@
                                                 <i class="ph ph-pencil"></i>
                                             </a>
                                             <a th:href="@{/products/delete/{id}(id=${product.idProduct})}"
-                                                class="text-red-600 hover:underline flex items-center gap-1">
+                                                class="text-red-600 hover:underline flex items-center gap-1"
+                                                onclick="return confirm('¿Estás seguro de que deseas eliminar este producto?')">
                                                 <i class="ph ph-trash"></i>
                                             </a>
                                         </div>
