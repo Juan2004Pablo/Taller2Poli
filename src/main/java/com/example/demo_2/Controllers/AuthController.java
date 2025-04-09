@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
 
@@ -29,7 +29,7 @@ public class AuthController {
     @PostMapping("/register")
     public String register(@ModelAttribute RegisterRequest request) {
         service.register(request);
-        return "redirect:/api/auth/login";
+        return "auth/login";
     }
 
     @GetMapping("/login")
