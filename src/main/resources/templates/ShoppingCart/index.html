@@ -24,9 +24,9 @@
                                     aria-current="page">Home</a>
                                 <a href="/users"
                                     class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Users</a>
-                                    <a href="/categories"
+                                <a href="/categories"
                                     class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Categories</a>
-                                    <a href="/products"
+                                <a href="/products"
                                     class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Products</a>
                             </div>
                         </div>
@@ -100,6 +100,36 @@
                                                     th:text="'$' + (${detailProduct.product.price} * ${detailProduct.quantity})">
                                                 </p>
                                             </div>
+                                            <form
+                                                th:action="@{/shopping-cart/update-quantity/{id}(id=${detailProduct.idDetailsProducts})}"
+                                                method="post" class="flex items-center space-x-4">
+                                                <div class="inline-grid w-full max-w-16 grid-cols-1">
+                                                    <select name="quantity" th:name="quantity"
+                                                        th:value="${detailProduct.quantity}"
+                                                        aria-label="Cantidad, [[${detailProduct.product.nameProduct}]]"
+                                                        class="col-start-1 row-start-1 appearance-none rounded-md bg-white py-1.5 pr-8 pl-3 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6">
+
+                                                        <option
+                                                            th:each="i : ${#numbers.sequence(1, detailProduct.product.stock)}"
+                                                            th:value="${i}" th:selected="${i == detailProduct.quantity}"
+                                                            th:text="${i}">
+                                                        </option>
+                                                    </select>
+
+                                                    <svg class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end text-gray-500 sm:size-4"
+                                                        viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                                                        <path fill-rule="evenodd"
+                                                            d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z"
+                                                            clip-rule="evenodd" />
+                                                    </svg>
+                                                </div>
+
+                                                <button type="submit"
+                                                    class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                                                    <i class="ph ph-check-circle text-xl"></i>
+                                                </button>
+                                            </form>
+
                                             <p class="mt-1 text-sm text-gray-500"
                                                 th:text="'Quantity: ' + ${detailProduct.quantity}">
                                             </p>
@@ -141,12 +171,14 @@
                             </div>
 
                             <div class="mt-10">
-                                <button type="button"
-                                    onclick="window.open('https://checkout-test.placetopay.com/spa/session/3358943/a779053e8a835f13e906646b0d4adaf7', '_blank')"
-                                    class="w-full rounded-md border border-transparent bg-orange-600 px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-orange-700 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden">
-                                    Checkout
-                                </button>
-
+                                <form
+                                    th:action="@{/order/create/{id}(id=${cartDetail.idDetail})}"
+                                    method="post">
+                                    <button type="submit"
+                                        class="w-full rounded-md border border-transparent bg-orange-600 px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-orange-700 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden">
+                                        Checkout
+                                    </button>
+                                </form>
                             </div>
 
                             <div class="mt-6 text-center text-sm">

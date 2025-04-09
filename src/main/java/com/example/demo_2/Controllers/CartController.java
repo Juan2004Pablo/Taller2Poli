@@ -47,10 +47,8 @@ public class CartController {
 
         if (detail == null) {
             detail = new Detail();
-            // Asignar datos necesarios (p.ej. usuario, fecha, estado)
             cartService.store(detail);
         }
-        // Agregar el producto al carrito con la cantidad indicada
         cartService.addProductToCart(detail.getIdDetail(), productId, quantity);
         return "redirect:/shopping-cart";
     }
@@ -59,12 +57,19 @@ public class CartController {
     public String removeFromCart(@PathVariable Long id) {
         Long cartId = cartService.getLatestActiveDetailId();
         Detail latestDetail = cartService.getCartDetailById(cartId);
-    
+
         if (latestDetail == null) {
             throw new RuntimeException("No se encontró un detalle activo");
         }
 
         cartService.removeProductFromDetail(id, latestDetail.getIdDetail());
+        return "redirect:/shopping-cart";
+    }
+
+    @PostMapping("/update-quantity/{id}")
+    public String updateQuantity(@PathVariable int id,
+            @RequestParam int quantity) {
+        cartService.updateQuantityProduct(id, quantity);
         return "redirect:/shopping-cart";
     }
 

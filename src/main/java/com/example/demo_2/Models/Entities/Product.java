@@ -2,7 +2,6 @@ package com.example.demo_2.Models.Entities;
 
 import jakarta.persistence.*;
 import lombok.Data;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 

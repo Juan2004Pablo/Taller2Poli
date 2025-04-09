@@ -6,6 +6,9 @@ import com.example.demo_2.Models.Entities.Product;
 import com.example.demo_2.Models.Entities.User;
 import com.example.demo_2.Services.DetailService;
 import com.example.demo_2.Services.ProductService;
+
+import jakarta.persistence.EntityNotFoundException;
+
 import com.example.demo_2.Repository.DetailRepository;
 import com.example.demo_2.Repository.DetailsProductRepository;
 import com.example.demo_2.Repository.UserRepository;
@@ -46,7 +49,7 @@ public class CartServiceImpl implements DetailService {
     @Transactional
     public Detail getCartDetailById(Long detailId) {
         Optional<Detail> optionalDetail = detailRepository.findById(detailId);
-        if(optionalDetail.isPresent()){
+        if (optionalDetail.isPresent()) {
             return optionalDetail.get();
         } else {
             throw new RuntimeException("No se encontró el detalle con ID 1");
@@ -57,12 +60,12 @@ public class CartServiceImpl implements DetailService {
     public void addProductToCart(Long detailId, Long productId, int quantity) {
         Optional<Detail> optionalDetail = detailRepository.findById(detailId);
         Optional<Product> optionalProduct = Optional.ofNullable(productService.findById(productId));
-    
+
         if (optionalDetail.isPresent() && optionalProduct.isPresent()) {
             Detail detail = optionalDetail.get();
             Product product = optionalProduct.get();
             boolean found = false;
-    
+
             if (detail.getDetailsProducts() != null) {
                 for (DetailsProduct dp : detail.getDetailsProducts()) {
                     if (dp.getProduct().getIdProduct().equals(productId)) {
@@ -73,24 +76,24 @@ public class CartServiceImpl implements DetailService {
                     }
                 }
             }
-    
+
             if (!found) {
                 DetailsProduct dp = new DetailsProduct();
                 dp.setDetail(detail); // 🔹 Asignar correctamente el detalle
                 dp.setProduct(product); // 🔹 Asignar correctamente el producto
                 dp.setQuantity(quantity);
-    
+
                 detailsProductRepository.save(dp);
             }
-    
+
             detailRepository.save(detail);
         }
-    }    
+    }
 
-    
     @Transactional
     public void addToCart(Product product) {
-        // Este método se ajusta para el manejo en sesión, si se desea persistir, se puede utilizar el repositorio
+        // Este método se ajusta para el manejo en sesión, si se desea persistir, se
+        // puede utilizar el repositorio
         for (Detail detail : cartDetails) {
             if (detail.getDetailsProducts() != null) {
                 for (DetailsProduct dp : detail.getDetailsProducts()) {
@@ -115,12 +118,13 @@ public class CartServiceImpl implements DetailService {
 
     @Transactional
     public void removeProductFromDetail(Long productId, Long detailId) {
-        DetailsProduct detailsProduct = detailsProductRepository.findByProduct_IdProductAndDetail_IdDetail(productId, detailId)
+        DetailsProduct detailsProduct = detailsProductRepository
+                .findByProduct_IdProductAndDetail_IdDetail(productId, detailId)
                 .orElseThrow(() -> new RuntimeException("Producto no encontrado en el detalle"));
-    
+
         // Eliminar de la lista de la entidad padre
         detailsProduct.getDetail().getDetailsProducts().remove(detailsProduct);
-    
+
         // Eliminar de la base de datos
         detailsProductRepository.delete(detailsProduct);
     }
@@ -140,7 +144,7 @@ public class CartServiceImpl implements DetailService {
     public void store(Detail detail) {
         detail.setCreateAt(LocalDateTime.now());
         detail.setStatus("ACTIVE");
-        
+
         // Crear un usuario dummy
         User dummyUser = new User();
         dummyUser.setIdentification(1L);
@@ -149,18 +153,18 @@ public class CartServiceImpl implements DetailService {
         dummyUser.setPhone("0000000000");
         dummyUser.setEmail("dummy@example.com");
         dummyUser.setPassword("dummy");
-        
+
         // Verificar si ya existe un usuario con identification = 1 en la base de datos
         if (!userRepository.existsById(dummyUser.getIdentification())) {
             userRepository.save(dummyUser);
         }
-        
+
         // Asignar el usuario dummy al detalle
         detail.setUser(dummyUser);
         detail.setIdentification(dummyUser.getIdentification());
-        
+
         detailRepository.save(detail);
-    }    
+    }
 
     @Override
     @Transactional
@@ -189,6 +193,24 @@ public class CartServiceImpl implements DetailService {
     public Long countProductsInDetail(Long detailId) {
         return detailsProductRepository.countProductsInDetail(detailId);
     }
+
+    @Transactional
+    public void updateQuantityProduct(Integer id, int quantity) {
+        DetailsProduct detailsProduct = detailsProductRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Detalle de Producto no encontrado con ID: " + id));
+    
+        int availableStock = detailsProduct.getProduct().getStock();
+    
+        if (quantity > availableStock) {
+            throw new IllegalArgumentException("La cantidad solicitada (" + quantity + ") excede el stock disponible (" + availableStock + ")");
+        }
+
+        if (quantity < 1) {
+            throw new IllegalArgumentException("La cantidad mínima permitida es 1.");
+        }        
+    
+        detailsProduct.setQuantity(quantity);
+    }    
 
     @Override
     public void removeFromCart(Long productId) {
