@@ -25,6 +25,8 @@
                                     class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Categories</a>
                                 <a href="/products"
                                     class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Products</a>
+                                <a href="/pays"
+                                    class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Pays</a>
                             </div>
                         </div>
                     </div>
@@ -161,8 +163,7 @@
                             </div>
 
                             <div class="mt-10">
-                                <form
-                                    th:action="@{/order/create/session/{id}(id=${cartDetail.idDetail})}"
+                                <form th:action="@{/order/create/session/{id}(id=${cartDetail.idDetail})}"
                                     method="post">
                                     <button type="submit"
                                         class="w-full rounded-md border border-transparent bg-orange-600 px-4 py-3 text-base font-medium text-white shadow-xs hover:bg-orange-700 focus:ring-2 focus:ring-orange-500 focus:ring-offset-2 focus:ring-offset-gray-50 focus:outline-hidden">

@@ -36,8 +36,7 @@ public class ProductController {
 
     @GetMapping
     public String listProducts(Model model) {
-        Long cartId = cartService.getLatestActiveDetailId();
-        Detail cart = cartService.getCartDetailById(cartId);
+        Detail cart = cartService.getLatestActiveDetail();
         Long productCount = cartService.countProductsInDetail(cart.getIdDetail());
 
         model.addAttribute("products", productService.findAll());

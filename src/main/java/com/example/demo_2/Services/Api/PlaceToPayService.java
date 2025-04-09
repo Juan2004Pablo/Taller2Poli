@@ -12,13 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import com.example.demo_2.Api.Amount;
 import com.example.demo_2.Api.Auth;
 import com.example.demo_2.Api.Payment;
 import com.example.demo_2.Api.Request.CreateSessionRequest;
+import com.example.demo_2.Api.Request.QuerySessionRequest;
 import com.example.demo_2.Api.Response.CreateSessionResponse;
+import com.example.demo_2.Api.Response.QuerySessionResponse;
 import com.example.demo_2.Models.Entities.Order;
 import com.example.demo_2.Models.Entities.Pay;
 
@@ -28,13 +32,14 @@ public class PlaceToPayService {
     @Autowired
     private RestTemplate restTemplate;
 
-    // URL del endpoint (ajusta de acuerdo a ambiente, por ejemplo sandbox o
-    // producción)
-    private final String URL_CREATE_SESSION = "https://checkout-test.placetopay.com/api/session";
+    private final String URL_SESSION = "https://checkout-test.placetopay.com/api/session";
 
-    // Tus credenciales proporcionadas
     private final String LOGIN = "8bb41265c7b1e5204aebfc7a8b0c489f";
     private final String TRAN_KEY = "nkgkBE7cw44juJQT";
+
+    public PlaceToPayService(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
+    }
 
     @Transactional
     public CreateSessionResponse createSession(Order order) throws Exception {
@@ -49,10 +54,10 @@ public class PlaceToPayService {
             CreateSessionRequest sessionRequest = new CreateSessionRequest();
             sessionRequest.setAuth(auth);
             sessionRequest.setPayment(payment);
-            sessionRequest.setExpiration(OffsetDateTime.now().plusMinutes(30).toString()); // Válida 30 minutos
-            sessionRequest.setReturnUrl("http://localhost:8065/"); // URL de retorno luego del pago
-            sessionRequest.setIpAddress("127.0.0.1"); // Usa la IP real del cliente si es necesario
-            sessionRequest.setUserAgent("Spring Boot App"); // O el user agent real
+            sessionRequest.setExpiration(OffsetDateTime.now().plusMinutes(60).toString());
+            sessionRequest.setReturnUrl("http://localhost:8065/pays");
+            sessionRequest.setIpAddress("127.0.0.1");
+            sessionRequest.setUserAgent("Spring Boot App");
 
             // 3. Configurar headers y enviar la solicitud
             HttpHeaders headers = new HttpHeaders();
@@ -60,7 +65,7 @@ public class PlaceToPayService {
 
             HttpEntity<CreateSessionRequest> requestEntity = new HttpEntity<>(sessionRequest, headers);
 
-            ResponseEntity<CreateSessionResponse> responseEntity = restTemplate.postForEntity(URL_CREATE_SESSION,
+            ResponseEntity<CreateSessionResponse> responseEntity = restTemplate.postForEntity(URL_SESSION,
                     requestEntity, CreateSessionResponse.class);
 
             CreateSessionResponse response = responseEntity.getBody();
@@ -73,6 +78,31 @@ public class PlaceToPayService {
         } catch (Exception e) {
             e.printStackTrace();
             throw new RuntimeException("Error al crear la sesión con PlaceToPay: " + e.getMessage());
+        }
+    }
+
+    public QuerySessionResponse querySession(Long requestId) throws Exception {
+        Auth auth = buildAuth();
+
+        QuerySessionRequest sessionRequest = new QuerySessionRequest();
+        sessionRequest.setAuth(auth);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<QuerySessionRequest> requestEntity = new HttpEntity<>(sessionRequest, headers);
+
+        try {
+            ResponseEntity<QuerySessionResponse> responseEntity = restTemplate.exchange(
+                    URL_SESSION + "/" + requestId,
+                    HttpMethod.POST,
+                    requestEntity,
+                    QuerySessionResponse.class);
+
+            return responseEntity.getBody();
+        } catch (HttpClientErrorException | HttpServerErrorException e) {
+            throw new Exception("Error HTTP PlaceToPay: " + e.getStatusCode() +
+                    "\nBody: " + e.getResponseBodyAsString());
         }
     }
 

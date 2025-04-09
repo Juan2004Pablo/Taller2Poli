@@ -21,9 +21,7 @@ public class CartController {
 
     @GetMapping
     public String showCart(Model model) {
-        // Falta consultar el detalle con estado activo del usuario
-        Long cartId = cartService.getLatestActiveDetailId();
-        Detail cart = cartService.getCartDetailById(cartId);
+        Detail cart = cartService.getLatestActiveDetail();
         Long productCount = cartService.countProductsInDetail(cart.getIdDetail());
 
         Long totalAmount = cartService.getTotalAmount(cart.getIdDetail());
@@ -36,14 +34,12 @@ public class CartController {
 
     @PostMapping("/add/{id}")
     public String addToCart(@PathVariable("id") Long productId, @RequestParam("quantity") int quantity) {
-        // Buscar el producto en la base de datos
         Product product = productService.findById(productId);
         if (product == null) {
             return "redirect:/shopping-cart?error=ProductNotFound";
         }
-        // Buscar o crear el detail (carrito) usando el repositorio
-        Long cartId = cartService.getLatestActiveDetailId();
-        Detail detail = cartService.getCartDetailById(cartId);
+
+        Detail detail = cartService.getLatestActiveDetail();
 
         if (detail == null) {
             detail = new Detail();
@@ -55,14 +51,13 @@ public class CartController {
 
     @PostMapping("/remove/{id}")
     public String removeFromCart(@PathVariable Long id) {
-        Long cartId = cartService.getLatestActiveDetailId();
-        Detail latestDetail = cartService.getCartDetailById(cartId);
+        Detail detail = cartService.getLatestActiveDetail();
 
-        if (latestDetail == null) {
+        if (detail == null) {
             throw new RuntimeException("No se encontró un detalle activo");
         }
 
-        cartService.removeProductFromDetail(id, latestDetail.getIdDetail());
+        cartService.removeProductFromDetail(id, detail.getIdDetail());
         return "redirect:/shopping-cart";
     }
 
@@ -70,12 +65,6 @@ public class CartController {
     public String updateQuantity(@PathVariable int id,
             @RequestParam int quantity) {
         cartService.updateQuantityProduct(id, quantity);
-        return "redirect:/shopping-cart";
-    }
-
-    @PostMapping("/clear")
-    public String clearCart() {
-        cartService.clearCart();
         return "redirect:/shopping-cart";
     }
 }

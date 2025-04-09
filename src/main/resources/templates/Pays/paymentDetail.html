@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalle del Pago</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans text-gray-800">
+
+    <div class="max-w-5xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">🧾 Detalle del Pago</h1>
+
+        <!-- Información del Pago -->
+        <div class="bg-white shadow rounded-xl p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">📌 Información del Pago</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <p><strong>ID:</strong> <span th:text="${pay.idPay}"></span></p>
+                <p><strong>Referencia:</strong> <span th:text="${pay.reference}"></span></p>
+                <p class="flex items-center gap-2">
+                    <strong>Estado:</strong> 
+                    <span th:text="${pay.status}"
+                          th:classappend="${pay.status == 'APPROVED' ? 'bg-green-50 text-green-700 ring-green-600/20' :
+                                           (pay.status == 'REJECTED' ? 'bg-red-50 text-red-700 ring-red-600/20' :
+                                           (pay.status == 'PENDING' ? 'bg-yellow-50 text-yellow-800 ring-yellow-600/20' :
+                                           'bg-gray-50 text-gray-600 ring-gray-500/10'))}"
+                          class="rounded-md px-2 py-0.5 text-xs font-medium ring-1 ring-inset">
+                    </span>
+                </p>
+                <p><strong>Fecha:</strong> <span th:text="${pay.createAt}"></span></p>
+                <p><strong>Request ID:</strong> <span th:text="${pay.requestId}"></span></p>
+            </div>
+        </div>
+
+        <!-- Información del Pedido -->
+        <div class="bg-white shadow rounded-xl p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">🧾 Información del Pedido</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <p><strong>ID Orden:</strong> <span th:text="${pay.order.idOrder}"></span></p>
+                <p><strong>Total:</strong> $<span th:text="${pay.order.total}"></span></p>
+                <p><strong>Dirección:</strong> <span th:text="${pay.order.address}"></span></p>
+            </div>
+        </div>
+
+        <!-- Detalle del Pedido -->
+        <div class="bg-white shadow rounded-xl p-6 mb-6">
+            <h2 class="text-xl font-semibold mb-4">📦 Detalle del Pedido</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                <p><strong>Estado del Detalle:</strong> <span th:text="${pay.order.detail.status}"></span></p>
+                <p><strong>Fecha de Creación:</strong> <span th:text="${pay.order.detail.createAt}"></span></p>
+            </div>
+        </div>
+
+        <!-- Productos Comprados -->
+        <div class="bg-white shadow rounded-xl p-6">
+            <h2 class="text-xl font-semibold mb-4">🛒 Productos Comprados</h2>
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200 text-sm">
+                    <thead class="bg-gray-50 text-gray-700 text-left">
+                        <tr>
+                            <th class="px-4 py-2 font-semibold">Producto</th>
+                            <th class="px-4 py-2 font-semibold">Descripción</th>
+                            <th class="px-4 py-2 font-semibold">Cantidad</th>
+                            <th class="px-4 py-2 font-semibold">Precio Unitario</th>
+                            <th class="px-4 py-2 font-semibold">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr th:each="dp : ${pay.order.detail.detailsProducts}">
+                            <td class="px-4 py-2" th:text="${dp.product.name}"></td>
+                            <td class="px-4 py-2" th:text="${dp.product.description}"></td>
+                            <td class="px-4 py-2" th:text="${dp.quantity}"></td>
+                            <td class="px-4 py-2">$<span th:text="${dp.product.price}"></span></td>
+                            <td class="px-4 py-2">$<span th:text="${dp.quantity * dp.product.price}"></span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

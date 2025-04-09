@@ -39,7 +39,6 @@ public class CartServiceImpl implements DetailService {
     @Autowired
     private ProductService productService;
 
-    // Manejamos un carrito en sesión
     private List<Detail> cartDetails = new ArrayList<>();
 
     public List<Detail> getCartDetails() {
@@ -129,10 +128,6 @@ public class CartServiceImpl implements DetailService {
         detailsProductRepository.delete(detailsProduct);
     }
 
-    public void clearCart() {
-        cartDetails.clear();
-    }
-
     @Override
     @Transactional(readOnly = true)
     public Detail show(Long id) {
@@ -182,13 +177,6 @@ public class CartServiceImpl implements DetailService {
                 .sum();
     }
 
-    @Transactional(readOnly = true)
-    public Long getLatestActiveDetailId() {
-        return detailRepository.findLatestActiveDetail()
-                .map(Detail::getIdDetail)
-                .orElse(null); // Devuelve null si no hay detalles activos
-    }
-
     @Transactional
     public Long countProductsInDetail(Long detailId) {
         return detailsProductRepository.countProductsInDetail(detailId);
@@ -212,9 +200,21 @@ public class CartServiceImpl implements DetailService {
         detailsProduct.setQuantity(quantity);
     }    
 
-    @Override
-    public void removeFromCart(Long productId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'removeFromCart'");
+    @Transactional(readOnly = true)
+    public Detail getLatestActiveDetail() {
+        Optional<Detail> optionalDetail = detailRepository.findTopByStatusOrderByIdDetailDesc("ACTIVE");
+    
+        if (optionalDetail.isPresent()) {
+            return optionalDetail.get();
+        } else {
+            Detail newDetail = new Detail();
+            newDetail.setStatus("ACTIVE");
+            newDetail.setCreateAt(LocalDateTime.now());
+
+            Long userId = 1L;
+            newDetail.setIdentification(userId);
+    
+            return detailRepository.save(newDetail);
+        }
     }
 }

@@ -25,8 +25,7 @@ public class CategoryController {
 
     @GetMapping
     public String listCategories(Model model) {
-        Long cartId = cartService.getLatestActiveDetailId();
-        Detail cart = cartService.getCartDetailById(cartId);
+        Detail cart = cartService.getLatestActiveDetail();
         Long productCount = cartService.countProductsInDetail(cart.getIdDetail());
 
         model.addAttribute("categories", categoryService.findAll());
