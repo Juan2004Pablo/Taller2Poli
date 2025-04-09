@@ -1,162 +1,114 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-white">
-
+<html lang="es" class="h-full">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/@phosphor-icons/web"></script>
-    <title>Shopping cart</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- TailwindCSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Iconos Phosphor -->
+  <script src="https://unpkg.com/@phosphor-icons/web"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <title>Carrito de Compras - Elegance</title>
+  <style>
+    /* Asignar fuentes personalizadas */
+    body { font-family: 'Roboto', sans-serif; }
+    h1, h2, h3, .font-heading { font-family: 'Playfair Display', serif; }
+  </style>
 </head>
-
-<body class="h-full">
-    <div class="min-h-full">
-        <nav class="bg-gray-800">
-            <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                <div class="flex h-16 items-center justify-between">
-                    <div class="flex items-center">
-                        <div class="shrink-0">
-                            <!--<img class="size-8" src="https://tailwindcss.com/plus-assets/img/logos/mark.svg?color=indigo&shade=500" alt="Your Company">-->
-                        </div>
-                        <div class="hidden md:block">
-                            <div class="ml-10 flex items-baseline space-x-4">
-                                <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                                <a href="/" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
-                                    aria-current="page">Home</a>
-                                <a href="/users"
-                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Users</a>
-                                <a href="/categories"
-                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Categories</a>
-                                <a href="/products"
-                                    class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Products</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="hidden md:block">
-                        <div class="ml-4 flex items-center md:ml-6">
-                            <!--<button type="button"
-                                class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
-                                onclick="window.location.href='/shopping-cart'">
-                                <span class="absolute -inset-1.5"></span>
-                                <span class="sr-only">Shopping cart</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                </svg>
-                            </button>-->
-                            <button type="button"
-                                class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
-                                onclick="window.location.href='/shopping-cart'">
-                                <span class="absolute -inset-1.5"></span>
-                                <span class="sr-only">Shopping cart</span>
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                    stroke-width="1.5" stroke="currentColor" class="size-6">
-                                    <path stroke-linecap="round" stroke-linejoin="round"
-                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                </svg>
-                                <span id="cart-count" th:text="${productCount}"
-                                    class="absolute top-0 right-0 -mt-1.5 -mr-1.5 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                                </span>
-                            </button>
-
-                            <!-- Profile dropdown -->
-                            <div class="relative ml-3">
-                                <div>
-                                    <button type="button"
-                                        class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
-                                        id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                        <span class="absolute -inset-1.5"></span>
-                                        <span class="sr-only">Open user menu</span>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                            stroke-width="1.5" stroke="currentColor" class="size-6">
-                                            <path stroke-linecap="round" stroke-linejoin="round"
-                                                d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                        </svg>
-                                    </button>
-                                </div>
-                                <!-- Opcional: dropdown del usuario -->
-                            </div>
-                        </div>
-                    </div>
-                </div>
+<body class="h-full bg-gray-50">
+  <div class="min-h-full">
+    <nav class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-6">
+        <div class="flex h-16 items-center justify-between">
+          <div class="flex items-center">
+            <div class="hidden md:block ml-10">
+              <div class="flex items-center space-x-8">
+                <a href="/" class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Home</a>
+                <a href="/users" class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Users</a>
+                <a href="/categories" class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Categories</a>
+                <a href="/products" class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Products</a>
+              </div>
             </div>
-        </nav>
-
-        <header class="bg-white shadow-xs">
-            <div class="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-                <h1 class="text-lg/6 font-semibold text-gray-900">Home</h1>
+          </div>
+          <div class="hidden md:flex items-center space-x-6">
+            <button type="button" class="relative p-2 text-gray-100 hover:text-orange-400 transition duration-200" onclick="window.location.href='/shopping-cart'">
+              <span class="sr-only">Carrito de Compras</span>
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+              </svg>
+              <span id="cart-count" th:text="${productCount}" class="absolute top-0 right-0 -mt-1.5 -mr-1.5 bg-orange-500 text-gray-900 text-xs font-bold px-1.5 py-0.5 rounded-full"></span>
+            </button>
+            <!-- Dropdown de usuario -->
+            <div class="relative">
+              <button type="button" class="flex items-center p-2 rounded-full text-gray-100 hover:text-orange-400 transition duration-200 focus:outline-none" id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                <span class="sr-only">Abrir menú de usuario</span>
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                </svg>
+              </button>
             </div>
-        </header>
-        <main>
-            <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-                <div class="mt-8 grid grid-cols-1 gap-y-12 sm:grid-cols-2 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8">
-                    <div th:each="product : ${products}">
-                        <div class="relative">
-                            <a th:href="@{/home/show/{id}(id=${product.idProduct})}">
-                                <div class="relative h-72 w-full overflow-hidden rounded-lg">
-                                    <img th:src="${product.image}" alt="Product Image"
-                                        class="w-full h-full object-cover">
-                                </div>
-                            </a>
-                            <div class="relative mt-4">
-                                <a th:href="@{/home/show/{id}(id=${product.idProduct})}"
-                                    class="text-lg font-bold text-gray-900">
-                                    <h3 th:text="${product.name}">Product Name</h3>
-                                </a>
-                                <p class="mt-1 text-sm text-gray-500" th:text="${product.description}">
-                                    Product Description
-                                </p>
-                                <p class="text-2xl font-extrabold text-blue-600 mt-3" th:text="${product.price}">
-                                    Price
-                                </p>
-                            </div>
-                            <div
-                                class="absolute inset-x-0 top-0 flex h-72 items-end justify-end overflow-hidden rounded-lg p-4">
-                                <div aria-hidden="true"
-                                    class="absolute inset-x-0 bottom-0 h-36 bg-gradient-to-t from-black opacity-50">
-                                </div>
-                                <a th:href="@{/home/show/{id}(id=${product.idProduct})}"
-                                    class="relative text-white text-xl">
-                                    <i class="ph ph-eye"></i>
-                                </a>
-                            </div>
-                        </div>
-                        <form th:action="@{/shopping-cart/add/{id}(id=${product.idProduct})}" method="post"
-                            class="flex items-center space-x-3">
-                            <label for="quantity" class="text-sm font-medium text-gray-700">Cantidad:</label>
-                            <input type="number" id="quantity" name="quantity" min="1" th:attr="max=${product.stock}"
-                                value="1" required
-                                class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500" />
-                            <button type="submit"
-                                class="add-to-bag inline-flex items-center gap-2 px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-700 whitespace-nowrap">
-                                <i class="ph ph-shopping-cart text-lg"></i>
-                                <span>Buy now</span>
-                            </button>
-                        </form>
-                    </div>
-                </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <header class="bg-gray-50 py-8">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <h1 class="text-4xl font-heading text-gray-800 text-center">Shop the Best, Chosen for the Best</h1>
+      </div>
+    </header>
+
+    <main class="pb-12">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+          <div th:each="product : ${products}" class="bg-white rounded-xl shadow-lg overflow-hidden transform hover:scale-105 transition-transform duration-300">
+            <a th:href="@{/home/show/{id}(id=${product.idProduct})}">
+              <div class="relative h-72 overflow-hidden">
+                <img th:src="${product.image}" alt="Imagen del producto" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent opacity-40"></div>
+              </div>
+            </a>
+            <div class="p-5">
+              <a th:href="@{/home/show/{id}(id=${product.idProduct})}" class="block">
+                <h3 class="text-2xl font-heading text-gray-900" th:text="${product.name}">Nombre del Producto</h3>
+              </a>
+              <p class="mt-2 text-gray-600 text-sm" th:text="${product.description}">Descripción breve del producto</p>
+              <p class="mt-4 text-xl font-bold text-orange-600" th:text="${product.price}">Precio</p>
             </div>
-        </main>
-    </div>
+            <div class="px-5 pb-5">
+              <form th:action="@{/shopping-cart/add/{id}(id=${product.idProduct})}" method="post" class="flex items-center space-x-3">
+                <input type="number" id="quantity" name="quantity" min="1" th:attr="max=${product.stock}" value="1" required 
+                  class="w-20 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-400" />
+                <button type="submit" class="flex items-center gap-2 px-4 py-2 bg-orange-500 text-gray-900 rounded-md hover:bg-orange-400 transition-colors duration-200">
+                  <i class="ph ph-shopping-cart text-xl"></i>
+                  <span>Buy now</span>
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 
-    <script>
-        document.querySelectorAll(".add-to-bag").forEach(button => {
-            button.addEventListener("click", function () {
-                let quantity = this.parentElement.querySelector("[data-quantity]").textContent;
-                alert(`Agregaste ${quantity} unidades al carrito.`);
-            });
-        });
+  <script>
+    document.querySelectorAll("form").forEach(form => {
+      form.addEventListener("submit", function(e) {
+        let quantity = form.querySelector("input[name='quantity']").value;
+      });
+    });
 
-        document.querySelectorAll(".text-2xl").forEach(priceElement => {
-            let price = parseFloat(priceElement.textContent);
-            priceElement.textContent = new Intl.NumberFormat("es-CO", {
-                style: "currency",
-                currency: "COP",
-                minimumFractionDigits: 0
-            }).format(price);
-        });
-    </script>
+    document.querySelectorAll(".text-xl.font-bold").forEach(priceEl => {
+      let price = parseFloat(priceEl.textContent);
+      if(!isNaN(price)) {
+        priceEl.textContent = new Intl.NumberFormat("es-CO", {
+          style: "currency",
+          currency: "COP",
+          minimumFractionDigits: 0
+        }).format(price);
+      }
+    });
+  </script>
 </body>
-
 </html>

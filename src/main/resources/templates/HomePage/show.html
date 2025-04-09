@@ -12,60 +12,48 @@
 <body>
     <div class="bg-white">
         <div class="min-h-full">
-            <nav class="bg-gray-800">
-                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <nav class="bg-gradient-to-r from-gray-800 to-gray-900 shadow-lg">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-6">
                     <div class="flex h-16 items-center justify-between">
                         <div class="flex items-center">
-                            <div class="shrink-0">
-                                <!--<img class="size-8" src="..." alt="Your Company">-->
-                            </div>
-                            <div class="hidden md:block">
-                                <div class="ml-10 flex items-baseline space-x-4">
-                                    <a href="/" class="rounded-md bg-gray-900 px-3 py-2 text-sm font-medium text-white"
-                                        aria-current="page">Home</a>
+                            <div class="hidden md:block ml-10">
+                                <div class="flex items-center space-x-8">
+                                    <a href="/"
+                                        class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Home</a>
                                     <a href="/users"
-                                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Users</a>
+                                        class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Users</a>
                                     <a href="/categories"
-                                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Categories</a>
+                                        class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Categories</a>
                                     <a href="/products"
-                                        class="rounded-md px-3 py-2 text-sm font-medium text-gray-300 hover:bg-gray-700 hover:text-white">Products</a>
+                                        class="px-3 py-2 text-sm font-medium text-gray-100 hover:text-orange-400 transition duration-200">Products</a>
                                 </div>
                             </div>
                         </div>
-                        <div class="hidden md:block">
-                            <div class="ml-4 flex items-center md:ml-6">
+                        <div class="hidden md:flex items-center space-x-6">
+                            <button type="button"
+                                class="relative p-2 text-gray-100 hover:text-orange-400 transition duration-200"
+                                onclick="window.location.href='/shopping-cart'">
+                                <span class="sr-only">Shopping Cart</span>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25L5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                </svg>
+                                <span id="cart-count" th:text="${productCount}"
+                                    class="absolute top-0 right-0 -mt-1.5 -mr-1.5 bg-orange-500 text-gray-900 text-xs font-bold px-1.5 py-0.5 rounded-full"></span>
+                            </button>
+                            <!-- User dropdown -->
+                            <div class="relative">
                                 <button type="button"
-                                    class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
-                                    onclick="window.location.href='/shopping-cart'">
-                                    <span class="absolute -inset-1.5"></span>
-                                    <span class="sr-only">Shopping cart</span>
+                                    class="flex items-center p-2 rounded-full text-gray-100 hover:text-orange-400 transition duration-200 focus:outline-none"
+                                    id="user-menu-button" aria-expanded="false" aria-haspopup="true">
+                                    <span class="sr-only">Open user menu</span>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                        stroke-width="1.5" stroke="currentColor" class="size-6">
+                                        stroke-width="1.5" stroke="currentColor" class="w-7 h-7">
                                         <path stroke-linecap="round" stroke-linejoin="round"
-                                            d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                            d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                                     </svg>
-                                    <span id="cart-count" th:text="${productCount}"
-                                        class="absolute top-0 right-0 -mt-1.5 -mr-1.5 bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full">
-                                    </span>
                                 </button>
-
-                                <!-- Profile dropdown -->
-                                <div class="relative ml-3">
-                                    <div>
-                                        <button type="button"
-                                            class="relative flex max-w-xs items-center rounded-full bg-gray-800 text-sm text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden"
-                                            id="user-menu-button" aria-expanded="false" aria-haspopup="true">
-                                            <span class="absolute -inset-1.5"></span>
-                                            <span class="sr-only">Open user menu</span>
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                stroke-width="1.5" stroke="currentColor" class="size-6">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                    d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                                            </svg>
-                                        </button>
-                                    </div>
-                                    <!-- Opcional: dropdown del usuario -->
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -93,28 +81,28 @@
                                             class="pointer-events-none absolute inset-0 rounded-md ring-2 ring-transparent ring-offset-2"
                                             aria-hidden="true"></span>
                                     </button>
-                                    <!-- Más imágenes... -->
+                                    <!-- More images... -->
                                 </div>
                             </div>
                             <div>
-                                <!-- Panel de imagen, se muestra según la selección -->
+                                <!-- Image panel, displayed on selection -->
                                 <div id="tabs-2-panel-1" aria-labelledby="tabs-2-tab-1" role="tabpanel" tabindex="0">
                                     <img th:src="${product.image}" alt="image example"
                                         class="aspect-square w-full object-cover sm:rounded-lg">
                                 </div>
-                                <!-- Más imágenes... -->
+                                <!-- More images... -->
                             </div>
                         </div>
 
-                        <!-- Información del producto -->
+                        <!-- Product information -->
                         <div class="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
                             <div class="mt-6 flex items-center justify-between">
                                 <h1 class="text-3xl font-bold tracking-tight text-gray-900" th:text="${product.name}">
-                                    Nombre del Producto
+                                    Product Name
                                 </h1>
                                 <div>
                                     <span class="px-3 py-1 bg-red-600 text-white text-sm rounded-full font-medium">
-                                        ¡Solo quedan <span th:text="${product.stock}">0</span>!
+                                        Only <span th:text="${product.stock}">0</span> left!
                                     </span>
                                 </div>
                             </div>
@@ -126,19 +114,18 @@
                                 </p>
                             </div>
 
-                            <!-- Reseñas -->
+                            <!-- Reviews -->
                             <div class="mt-3">
                                 <h3 class="sr-only">Reviews</h3>
                                 <div class="flex items-center">
                                     <div class="flex items-center">
-                                        <!-- Se muestran estrellas (se puede ajustar la cantidad) -->
+                                        <!-- Star icons (repeat for 5 stars) -->
                                         <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20"
                                             fill="currentColor" aria-hidden="true">
                                             <path fill-rule="evenodd"
                                                 d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z"
                                                 clip-rule="evenodd" />
                                         </svg>
-                                        <!-- Se repite para 5 estrellas -->
                                         <svg class="size-5 shrink-0 text-orange-500" viewBox="0 0 20 20"
                                             fill="currentColor" aria-hidden="true">
                                             <path fill-rule="evenodd"
@@ -199,49 +186,34 @@
                                     </div>
                                 </form>
                                 <section aria-labelledby="features-heading" class="mt-12">
-                                    <h2 id="features-heading" class="text-xl font-bold text-gray-900">Características y
-                                        Beneficios</h2>
+                                    <h2 id="features-heading" class="text-xl font-bold text-gray-900">Features and Benefits</h2>
                                     <div class="mt-4">
                                         <p class="text-base text-gray-700 mb-4">
-                                            Descubre un producto diseñado para superar tus expectativas. Con materiales
-                                            de alta calidad y un diseño innovador, garantizamos un rendimiento superior
-                                            que se adapta a tu estilo de vida.
+                                            Discover a product designed to exceed your expectations. With high-quality materials and an innovative design, we guarantee superior performance that adapts to your lifestyle.
                                         </p>
                                         <ul class="list-disc space-y-2 pl-5 text-base text-gray-700">
-                                            <li class="font-medium">Diseño y calidad premium: Innovación y estándares
-                                                altos en cada detalle.</li>
-                                            <li class="font-medium">Garantía integral: Tu inversión está protegida con
-                                                respaldo total.</li>
-                                            <li class="font-medium">Devoluciones sin complicaciones: Un proceso rápido y
-                                                sin riesgos si no quedas 100% satisfecho.</li>
-                                            <li class="font-medium">Atención personalizada: Asesoría experta a tu
-                                                disposición en todo momento.</li>
+                                            <li class="font-medium">Premium design and quality: Innovation and high standards in every detail.</li>
+                                            <li class="font-medium">Comprehensive warranty: Your investment is fully protected.</li>
+                                            <li class="font-medium">Hassle-free returns: A fast and risk-free process if you are not 100% satisfied.</li>
+                                            <li class="font-medium">Personalized service: Expert advice available to you at all times.</li>
                                         </ul>
                                     </div>
                                 </section>
 
                                 <section aria-labelledby="warranty-heading" class="mt-12">
-                                    <h2 id="warranty-heading" class="text-xl font-bold text-gray-900">Garantía y
-                                        Devoluciones</h2>
+                                    <h2 id="warranty-heading" class="text-xl font-bold text-gray-900">Warranty and Returns</h2>
                                     <div class="mt-4">
                                         <p class="text-base text-gray-700">
-                                            Estamos comprometidos con tu satisfacción. Todos nuestros productos cuentan
-                                            con una garantía de 12 meses que respalda su durabilidad y calidad. Además,
-                                            si por cualquier motivo el producto no cumple con tus expectativas, nuestro
-                                            proceso de devolución es ágil y sin complicaciones.
+                                            We are committed to your satisfaction. All our products come with a 12-month warranty that ensures their durability and quality. Additionally, if for any reason the product does not meet your expectations, our return process is swift and hassle-free.
                                         </p>
                                     </div>
                                 </section>
 
                                 <section aria-labelledby="customer-service-heading" class="mt-12">
-                                    <h2 id="customer-service-heading" class="text-xl font-bold text-gray-900">Atención
-                                        al Cliente</h2>
+                                    <h2 id="customer-service-heading" class="text-xl font-bold text-gray-900">Customer Service</h2>
                                     <div class="mt-4">
                                         <p class="text-base text-gray-700">
-                                            Nuestro compromiso va más allá de la venta. Contamos con un equipo de
-                                            atención al cliente disponible las 24 horas, listo para asesorarte y
-                                            resolver cualquier inquietud. Porque para nosotros, tu experiencia es lo
-                                            primero.
+                                            Our commitment goes beyond the sale. We have a 24-hour customer service team ready to advise you and resolve any concerns. Because for us, your experience comes first.
                                         </p>
                                     </div>
                                 </section>
@@ -287,11 +259,12 @@
             });
         });
 
+        // Update number format for US currency (USD)
         document.querySelectorAll(".text-2xl").forEach(priceElement => {
             let price = parseFloat(priceElement.textContent);
-            priceElement.textContent = new Intl.NumberFormat("es-CO", {
+            priceElement.textContent = new Intl.NumberFormat("en-US", {
                 style: "currency",
-                currency: "COP",
+                currency: "USD",
                 minimumFractionDigits: 0
             }).format(price);
         });
