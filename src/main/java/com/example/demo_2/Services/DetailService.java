@@ -19,5 +19,5 @@ public interface DetailService {
     void clearCart();
     Long getTotalAmount(Long detailId);
     Long getLatestActiveDetailId();
-    Long countProductsInDetail(Long detailId);
+    Long countProductsInDetail(Long detailId);  
 }
