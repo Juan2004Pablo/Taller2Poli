@@ -14,11 +14,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
 import lombok.Data;
 
 @Data
@@ -26,9 +21,10 @@ import lombok.Data;
 @Table(name = "Users")
 public class User implements UserDetails {
 
-    @Id
-    @Column(name = "Identification")
-    private Long identification;
+@Id
+@GeneratedValue(strategy = GenerationType.IDENTITY)
+@Column(name = "Identification")
+private Long identification;
     
     @Column(name = "Name", nullable = false)
     private String name;
