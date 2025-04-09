@@ -31,22 +31,30 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public Order createOrder(Long idDetail, Long total) {
         Detail detail = detailRepository.findById(idDetail)
-            .orElseThrow(() -> new EntityNotFoundException("Detalle no encontrado con ID: " + idDetail));
+                .orElseThrow(() -> new EntityNotFoundException("Detalle no encontrado con ID: " + idDetail));
+
+        if (total == null || total < 0) {
+            throw new IllegalArgumentException("El total no puede ser nulo o negativo.");
+        }
 
         if (detail.getOrder() != null) {
-            return detail.getOrder();
+            Order existingOrder = detail.getOrder();
+            existingOrder.setTotal(total);
+            existingOrder.setCreateAt(LocalDateTime.now());
+            return orderRepository.save(existingOrder);
         }
-    
-        User user = userRepository.findById(1L)
-            .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + 1L));
-    
+
+        Long userId = 1L;
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new EntityNotFoundException("Usuario no encontrado con ID: " + userId));
+
         Order order = new Order();
         order.setIdDetail(idDetail);
         order.setAddress(user.getAddress());
         order.setTotal(total);
         order.setDetail(detail);
         order.setCreateAt(LocalDateTime.now());
-    
+
         return orderRepository.save(order);
-    }    
+    }
 }

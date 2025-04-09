@@ -38,6 +38,11 @@ public class PayServiceImpl implements PayService {
             throw new EntityNotFoundException("No se encontró la orden con id: " + idOrder);
         }
 
+        Optional<Pay> existingPay = payRepository.findByIdOrder(idOrder);
+        if (existingPay.isPresent()) {
+            return existingPay.get();
+        }
+
         Order order = optionalOrder.get();
 
         Detail detail = order.getDetail();
@@ -64,6 +69,30 @@ public class PayServiceImpl implements PayService {
         pay.setPaymentMethod("");
         pay.setCreateAt(LocalDateTime.now());
         pay.setIdOrder(idOrder);
+
+        return payRepository.save(pay);
+    }
+
+    @Override
+    @Transactional
+    public Pay updatePay(Pay pay) {
+        if (pay.getIdPay() == null) {
+            throw new IllegalArgumentException("El ID del pago no puede ser nulo para actualizar.");
+        }
+
+        Optional<Pay> existingPayOpt = payRepository.findById(pay.getIdPay());
+
+        if (existingPayOpt.isEmpty()) {
+            throw new EntityNotFoundException("No se encontró el pago con ID: " + pay.getIdPay());
+        }
+
+        if (pay.getRequestId() != null) {
+            Optional<Pay> payWithSameRequestId = payRepository.findByRequestId(pay.getRequestId());
+    
+            if (payWithSameRequestId.isPresent() && !payWithSameRequestId.get().getIdPay().equals(pay.getIdPay())) {
+                throw new IllegalArgumentException("Ya existe un pago con el mismo requestId: " + pay.getRequestId());
+            }
+        }
 
         return payRepository.save(pay);
     }
