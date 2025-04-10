@@ -41,6 +41,11 @@ public class Product {
         this.createdAt = new Date();
     }
 
+    @PreUpdate
+    protected void onUpdate() {
+        this.createdAt = new Date();
+    }
+
     @ManyToOne
     @JoinColumn(name = "idCategory", insertable = false, updatable = false)
     private Category category;

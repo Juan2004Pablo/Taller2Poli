@@ -66,7 +66,7 @@
                 <div class="max-w-5xl mx-auto px-4 py-8">
                     <h1 class="text-4xl font-extrabold text-gray-800 mb-6 flex justify-center items-center gap-2">
                         🧾 Resumen Detallado del Pago
-                    </h1>                    
+                    </h1>
 
                     <!-- Información del Pago -->
                     <div class="bg-white shadow rounded-xl p-6 mb-6">
@@ -95,7 +95,9 @@
                                     </span>
                                 </span>
                             </p>
-                            <p><strong>Fecha:</strong> <span th:text="${pay.createAt}"></span></p>
+                            <p><strong>Fecha:</strong>
+                                <span th:text="${#temporals.format(pay.createAt, 'dd/MM/yyyy hh:mm a')}"></span>
+                            </p>
                             <p><strong>Request ID:</strong> <span th:text="${pay.requestId}"></span></p>
                         </div>
                     </div>
@@ -116,7 +118,8 @@
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                             <p><strong>Estado del Detalle:</strong> <span th:text="${pay.order.detail.status}"></span>
                             </p>
-                            <p><strong>Fecha de Creación:</strong> <span th:text="${pay.order.detail.createAt}"></span>
+                            <p><strong>Fecha de Creación:</strong> <span
+                                    th:text="${#temporals.format(pay.order.detail.createAt, 'dd/MM/yyyy hh:mm a')}"></span>
                             </p>
                         </div>
                     </div>
@@ -140,7 +143,7 @@
                                     <tr th:each="dp : ${pay.order.detail.detailsProducts}">
                                         <td class="px-4 py-2">
                                             <img th:src="@{${dp.product.image}}" alt="Imagen del producto"
-                                                 class="w-16 h-16 object-cover rounded-lg shadow-md">
+                                                class="w-16 h-16 object-cover rounded-lg shadow-md">
                                         </td>
                                         <td class="px-4 py-2" th:text="${dp.product.name}"></td>
                                         <td class="px-4 py-2" th:text="${dp.product.description}"></td>
@@ -158,4 +161,5 @@
         </main>
     </div>
 </body>
+
 </html>

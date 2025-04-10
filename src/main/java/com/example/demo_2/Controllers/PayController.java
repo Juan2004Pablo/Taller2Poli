@@ -54,6 +54,10 @@ public class PayController {
         Pay pay = optionalPay.get();
         model.addAttribute("pay", pay);
 
+        Detail cart = cartService.getLatestActiveDetail();
+        Long productCount = cartService.countProductsInDetail(cart.getIdDetail());
+        model.addAttribute("productCount", productCount);
+
         return "Pays/paymentDetail";
     }
 }
